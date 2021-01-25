@@ -37,7 +37,9 @@
 \newcommand{\R}{\mathbb{R}} % Reelle Zahlen
 \newcommand{\vektor}[1]{\begin{pmatrix}#1\end{pmatrix}} %Vetoren
 
-\newcommand{\kapitel}[2]{Kapitel #1 - #2}
+\newcommand{\leer}{$\varepsilon$}
+
+\newcommand{\kapitel}[2]{Kapitel #1 - \textsc{#2}}
 
 \newcommand{\blue}[1]{\textcolor{blue}{#1}}
 \newcommand{\red}[1]{\textcolor{red}{#1}}
@@ -52,6 +54,10 @@
 \newcommand{\example}[1]{\textit{Beispiel: }#1}
 \newcommand{\word}[1]{\blue{\texttt{#1}}}
 \newcommand{\interpretation}[1]{\babyblue{#1}}
+\newcommand{\set}[1]{\{#1\}}
+\newcommand{\anfuehrung}[1]{\flqq #1\frqq}
+
+\newcommand{\w}{\textsf{w}}
 
 \newcommand{\wsp}{\word{\tiny $\sqcup$}}
 
@@ -175,7 +181,112 @@
     \end{itemize}
     \item Das Leerzeichen betrachten wir auch als Zeichen. Manchmal schreiben wir explizit \wsp
     \item \word{Hallo\wsp Welt} ist \important{eine} Folge von Zeichen, also \important{ein} Wort und nicht zwei.
+    \item Formalere Definition eines Wortes:
+    \begin{itemize}
+        \item $\Z_n :=$ "die n kleinsten nichtnegativen ganzen Zahlen"\\
+        $\Z_n := \set{i \in \N \mid 0\leq i < n}$\\
+        $\Z_0 = \set{}, \Z_1 = \set{0}, \Z_4 = \set{0,1,2,3}$
+        \item Ein Wort über dem Alphabet $A$ ist eine \important{surjektive Abbildung}:\\
+        $\w: \Z_n \to B$  mit $B\subseteq A$ 
+        \item \important{$|w| := n$} ist die Länge des Wortes
+        \item Das Wort der Länge 0 wird als \important{leeres Wort} oder \important{\leer} bezeichnet.
+    \end{itemize}
+    \item Die Menge aller Wörter der Länge $n$ wird als \important{$A^n$} geschrieben.\\\example
+    \begin{itemize}
+        \item $A^0=\{$\leer$\}$
+        \item $A^1 = A = \set{\word{a,b}}$
+        \item $A^3 = \set{\word{aaa,aab,aba,abb,baa,bab,bba,bbb}}$
+    \end{itemize}
+    \item Die Menge aller Wörter über dem Alphabet $A$ wird als $A^*$ geschrieben\\
+    oder $\displaystyle{A^* = \bigcup_{i\in \Nz}A^i}$, wenn man eine Notation ohne Pünktchen bevorzugt.
+    \item Die Konkatenation bezeichnet die Aneinanderreihung mehrerer Worte, geschrieben wird diese durch \strong{$\cdot$}\\
+    \example\\ $x = \word{Hallo}, y = \word{Welt}$\\
+    $xy:=x\cdot y = \word{HalloWelt}$
+    \item Die Konkatenation ist im Allgemeinen \red{nicht} kommutativ.\\ \example\\ $\word{SCHRANK} \cdot \word{SCHLÜSSEL} = \word{SCHRANKSCHLÜSSEL} \neq \word{SCHLÜSSELSCHRANK} = \word{SCHLÜSSEL} \cdot \word{SCHRANK}$
+    \item Die Potenzen von Wörtern sind induktiv definiert durch:\\
+    $\forall \:\w \in A^*:\quad$$\w^0=$ \leer\qquad$\w^{n+1}=\w^n\cdot \w$
+    
+    \subsection{Binäre Relationen}
+    \begin{itemize}
+        \item Eine \important{binäre Operation} auf einer Menge $M$ ist eine Abbildung $f: M\times M \to M$
+        \item Oftmals wird eine Infixschreibweise benutzt, \example statt $+(3,8)=11$ schreibt man $3+8=11$
+        \item Eine binäre Operation $\star$ ist \strong{kommutativ}, wenn gilt:
+        \[ \forall x \in M \:\forall y \in M: \quad x\star y = y \star x \]
+        \item Eine binäre Operation $\star$ ist \strong{assoziativ}, wenn gilt:
+        \[ \forall x,y,z \in M: \quad (x\star y)\star z = x \star (y \star z) \]
+    \end{itemize}
 \end{itemize}
+
+\newpage
+
+\section{\kapitel{5}{Aussagenlogik}}
+\subsection{Aussagen}
+\begin{itemize}
+    \item Aussagen sind \important{objektiv} wahr oder falsch \\\example
+    \begin{itemize}
+        \item \anfuehrung{Die Abbildung $f: \R \to \R: x \mapsto \sqrt{x}$ ist injektiv} \qquad \textbf{ wahr}
+        \item \anfuehrung{Die Abbildung $f: \R \to \R: x \mapsto \sqrt{x}$ ist surjektiv} \qquad \textbf{falsch}
+    \end{itemize}
+    \item Es gibt auch scheinbar sinnvolle Aussagen, die in Wirklichkeit aber sinnlos sind:\\
+    \anfuehrung{Ein Barbier ist ein Mann, der genau diejenigen Männer rasiert, die sich nicht selbst rasieren.} 
+    \textit{Frage: Wer rasiert den Barbier?}
+    \item Jede Aussage besitzt einen \important{eindeutigen Wahrheitswert} (nämlich \strong{wahr} oder \strong{falsch}).
+\end{itemize}
+
+\subsection{Aussagenlogische Konnektive}
+Seien $P$ und $Q$ zwei Aussagen
+\begin{itemize}
+    \item \makebox[2.5cm][r]{\textbf{Negation:}} \makebox[2.75cm][r]{\anfuehrung{nicht $P$}:} \strong{$\lnot P$}
+    \item \makebox[2.5cm][r]{\textbf{logisches Und:}} \makebox[2.75cm][r]{\anfuehrung{$P$ und $Q$}:} \strong{$P \land Q$}
+    \item \makebox[2.5cm][r]{\textbf{logisches Oder:}} \makebox[2.75cm][r]{\anfuehrung{$P$ oder $Q$}:} \strong{$P \lor Q$}
+    \item \makebox[2.5cm][r]{\textbf{Implikation:}} \makebox[2.75cm][r]{\anfuehrung{$P$ impliziert $Q$}:} \strong{$P \rightarrow Q$}\\\makebox[5.25cm][r]{\anfuehrung{Wenn P, dann Q}}
+\end{itemize}
+Der Wahrheitswert einer \important{zusammengesetzten Aussage} ist durch die Wahrheitswerte der \important{Teilaussagen} \strong{eindeutig} festgelegt. Es gibt keine Abhängigkeit vom konkreten Inhalt der Aussagen, auch nicht bei \anfuehrung{Wenn..., dann...}.
+
+\example
+\begin{itemize}
+    \item $P:$ \anfuehrung{2014 wurden in Japan etwa 4,7 Mio. PKW neu zugelassen}
+    \item $Q:$ \anfuehrung{1999 gab es in Deutschland etwa 11,2 Mio. Internet-Nutzer}
+    \item \anfuehrung{Wenn $P$, dann $Q$} ist wahr, da die Teilaussagen wahr sind.
+\end{itemize}
+Definition des Alphabet der aussagenlogischen Formeln:\\\qquad $A_{AL} := \set{\word{(}, \word{)}, \word{$\lnot$}, \word{$\land$}, \word{$\lor$}, \word{$\rightarrow$}} \cup \set{$Aussagevariablen$}$
+
+Aussagenlogische Formeln sind die Worte aus $A^*_{AL}$, die sinnvoll geklammert und formuliert sind, dies wird im Weiteren nicht betrachtet.
+
+\subsection{Boolsche Funktionen}
+\begin{itemize}
+    \item Aussagenlogische Formeln sind erstmal nur Zeichenketten.
+    \item Sogenannte \important{boolsche Funktionen}:\\
+    $f: \mathbb{B}^k \to \mathbb{B}$, \qquad wobei $\mathbb{B}:= \set{\textbf{w}, \textbf{f}}$\\
+    sind Funktionen, die Wahrheitswerte auf Wahrheitswerte abbilden. Für die vorher definierten aussagenlogischen Konnektive gibt es die entsprechenden boolschen Funktionen:\\
+    $b_{\word{$\lnot$}}(x_1), b_{\word{$\land$}}(x_1, x_2), b_{\word{$\lor$}}(x_1, x_2), b_{\word{$\rightarrow$}}(x_1, x_2)$, wobei diese im Regelfall als Infix notiert werden.
+\end{itemize}
+
+\subsection{Bedeutung und Interpretation aussagenlogischer Formeln}
+\begin{itemize}
+    \item Sei $V$ die Menge von Aussagevariablen
+    \item \important{Interpretation} $I: V \to \mathbb{B}$\\
+    Dann ist $\mathbb{B}^V$ die Menge aller Interpretationen
+    \item Für jede aussagenlogische Formel $F$ ist die \strong{Auswertung} \important{$val_I(F)$} folgendermaßen definiert:
+    \begin{align*}
+        val_I(\word{$\lnot$} G) &= b_{\word{$\lnot$}}(val_I(G)) \\
+        val_I(G\word{$\land$}H) &= b_{\word{$\land$}}(val_I(G), val_I(H)) \\
+        val_I(G\word{$\lor$}H) &= b_{\word{$\lor$}}(val_I(G), val_I(H)) \\
+        val_I(G\word{$\rightarrow$}H) &= b_{\word{$\rightarrow$}}(val_I(G), val_I(H)) \\
+    \end{align*}
+    
+    \item Zwei Formeln $G$ und $H$ heißen \important{äquivalent}, wenn für jede Interpretation $I$ gilt:\\
+    $val_I(G) = val_I(H)$\\
+    \example
+    \begin{itemize}
+        \item \word{$\lnot$P$\lor \lnot$Q} und \word{$\lnot$(P$\land$Q)}
+        \item \word{$\lnot \lnot$P} und \word{P}
+    \end{itemize}
+    \item Randbemerkung:\\
+    G=$\word{P}_{\word{0}} \word{$\land$} \word{P}_{\word{0}}$ und H=$\word{P}_{\word{2}} \word{$\land$} \word{P}_{\word{2}}$ sind nicht äquivalent, da $\word{P}_{\word{0}}$ und $\word{P}_{\word{2}}$ nicht in jeder Interpretation $I$ den selben Wert haben.
+    
+\end{itemize}
+
 
 
 \end{document}
