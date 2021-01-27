@@ -225,7 +225,7 @@
     \item Die Potenzen von Wörtern sind induktiv definiert durch:\\
     $\forall \:\w \in A^*:\quad$$\w^0=$ \leer\qquad$\w^{n+1}=\w^n\cdot \w$
     
-    \subsection{Binäre Relationen}
+    \subsection{Binäre Operation}
     \begin{itemize}
         \item Eine \important{binäre Operation} auf einer Menge $M$ ist eine Abbildung $f: M\times M \to M$
         \item Oftmals wird eine Infixschreibweise benutzt, \example statt $+(3,8)=11$ schreibt man $3+8=11$
@@ -413,6 +413,7 @@ Für (nicht allzu) komplexe Regeln, wie ein Dokument auszusehen hat, bieten unse
         \item Bedeutung: man kann $X$ durch $w$ ersetzen.
         \item Terminalsymbole werden \strong{nicht} ersetzt,\\links des Pfeils stehen also immer Nichtterminalsymbole.
         \item Eine Ersetzung aus $P$ ist immer möglich, also unabhängig vom Kontext (\verweis{$\Rightarrow$ kontextfrei}).
+        \item Anstatt $P=\set{X\rightarrow\w_1, X\rightarrow\w_2,X\rightarrow\w_3}$ erlauben wir uns $P=\set{X\rightarrow\w_1\mid\w_2\mid\w_3}$
     \end{itemize}
     \item \example{$G=(\set{X}, \set{\word{a},\word{b}}, X, \set{X\rightarrow\varepsilon, X\rightarrow\word{a}X\word{b}})$}
 \end{itemize}
@@ -429,8 +430,45 @@ Für (nicht allzu) komplexe Regeln, wie ein Dokument auszusehen hat, bieten unse
         \item \makebox[1.5cm][l]{\important{$u\Rightarrow^*v$}} gdw. $\exists\: i\in \Nz: u\Rightarrow^iv$
     \end{itemize}
 \end{itemize}
-\subsection{Jede Grammatik induziert eine Formale sprache}
+\subsection{Jede Grammatik erzeugt eine formale Sprache}
 \begin{itemize}
-    \item 
+    \item Sei $G=(N,T,S,P)$ eine kontextfreie Grammatik. Dann ist\\
+    $L(G)=\set{\w\in T^* \mid S \Rightarrow^* \w} \subseteq T^*$ die \important{erzeugte formale Sprache}
+    \item Eine solche Sprache heißt \important{kontextfrei}.
 \end{itemize}
+
+\newpage
+\section{\kapitel{???}{Relationen}}
+\subsection{Definition einer (binären) Relation}
+\begin{itemize}
+    \item Eine (binäre) Relation $R$ ist eine Teilmenge $R \subseteq M \times M$
+    \item Man sagt, $a,b \in M$ sind in Relation, wenn gilt: $(a,b)\in R$
+\end{itemize}
+\subsection{Produkt von Relationen}
+\begin{itemize}
+    \item Seien $R\subseteq M_1\times M_2$ und $S\subseteq M_2 \times M_3$ zwei Relationen
+    \item Das \important{Produkt der Relationen} $R$ und $S$ ist definiert:\\
+    $S\circ R=\set{(x,z)\in M_1 \times M_3 \mid \exists\: y\in M_2: (x,y)\in R \land (y,z)\in S}$
+    \item $\circ$ ist assiziativ:\\
+    $(T\circ S)\circ R = T\circ(S\circ R)$
+\end{itemize}
+\subsection{Reflexiv-transitive Hülle}
+\begin{itemize}
+    \item Ist $R\subseteq M\times M$ eine binäre Relation auf $M$, dann definiert man die \important{Potenz $R^i$}:
+    \begin{align*}
+    R^0 &= I_M\\
+    \forall i \in \Nz:\:R^{i+1} &= R^i\circ R
+    \end{align*}
+    \item Die \important{reglexiv-transitive Hülle} einer Relation $R$ ist definiert als: $R^*=\displaystyle{\bigcup_{i\in \Nz}}R^i$
+    \item \example{Sei $R=\set{(n, n+1)\mid n\in\Nz}\subseteq\Nz\times\Nz$}
+    \begin{align*}
+        R\circ R &= \set{(n, n+2)\mid n\in\Nz}\\
+        R^0 &= \set{(n,n)\mid n\in\Nz}\\
+        R^1 &= \set{(n,n+1)\mid n\in\Nz}\\
+        R^2 &= \set{(n,n+2)\mid n\in\Nz}\\
+        R^* &= \set{(n,m)\mid n\leq m}
+    \end{align*}
+\end{itemize}
+
+
 \end{document}
