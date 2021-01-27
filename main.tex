@@ -391,6 +391,46 @@ Der Vollständigkeit halber sei es hier aber bereits jetzt erwähnt.
 Für (nicht allzu) komplexe Regeln, wie ein Dokument auszusehen hat, bieten unsere formalen Sprachen keine ausreichende Methodik, um diese Regeln formal zu definieren. Wir benötigen \verweis{kontextfreie Grammatiken} 
 
 \newpage
-\section{Kontextfreie Grammatiken}
+\section{\kapitel{12}{Kontextfreie Grammatiken}}
+\subsection{Das Problem mit formalen Sprachen...}
+\begin{itemize}
+    \item Nicht jede Spezifikation (z.B. die Sprache aller Java-Programme) kann mittels formaler Sprache ausgedrückt werden.
+    \item \example{Den Block-Syntax von Java kann man folgendermaßen versuchen zu spezifizieren:\\$L=\set{\varepsilon}\cup LL\cup\set{\word{(}}L\set{\word{)}}$}
+    \item[$\Rightarrow$]Diese Gleichung ist \important{lösbar}, aber nicht \important{\strong{eindeutig} lösbar}.
+\end{itemize}
+
 \subsection{Definition kontextfreier Grammatiken}
+\begin{itemize}
+    \item Eine kontextfreie Grammatik ist ein 4-Tupel:\\
+    $\important{G=(N,T,S,P)}$
+    \item \important{$N$} ist das Alphabet der \important{Nichtterminalsymbole}
+    \item \important{$T$} ist das Alphabet der \important{Terminalsymbole}
+    \item Es gilt stets: $N\cap T = \set{}$
+    \item \important{$S \in N$} ist das \important{Startsymbol} 
+    \item \important{$P \subseteq N \times (N\cup T)$} ist die \textit{endliche} Menge von \important{Produktionen}
+    \begin{itemize}
+        \item $(X, w) \in P$ schreibt man als $X \rightarrow w$
+        \item Bedeutung: man kann $X$ durch $w$ ersetzen.
+        \item Terminalsymbole werden \strong{nicht} ersetzt,\\links des Pfeils stehen also immer Nichtterminalsymbole.
+        \item Eine Ersetzung aus $P$ ist immer möglich, also unabhängig vom Kontext (\verweis{$\Rightarrow$ kontextfrei}).
+    \end{itemize}
+    \item \example{$G=(\set{X}, \set{\word{a},\word{b}}, X, \set{X\rightarrow\varepsilon, X\rightarrow\word{a}X\word{b}})$}
+\end{itemize}
+\subsection{Ableitungsschritt}
+\begin{itemize}
+    \item Die Ableitung von Wörtern erfolgt mittels einer \important{Produktion}: \important{$u\Rightarrow v$}
+    \item Das bedeutet: $v\in V^*$ ist in einem Schritt aus $u\in V^*$ ableitbar
+    \item \example{$G=(\set{X}, \set{\word{a},\word{b}}, X, \set{X\rightarrow\varepsilon, X\rightarrow\word{a}X\word{b}}), \quad u=\word{a}X\word{b},\quad v=\word{ab}$, dann gilt: $u\Rightarrow v$\\
+    Allerdings: ${u} = \word{a}X\word{b},\quad \widetilde{v}=\word{aabb}:\quad u\not\Rightarrow \widetilde{v}$, sondern $u\Rightarrow \word{aa}X\word{bb} \Rightarrow \widetilde{v}$}
+    \item Es werden auch \important{Ableitungsfolgen definiert}:\\$u,v\in V^*, \quad i\in \Nz$
+    \begin{itemize}
+        \item \makebox[1.5cm][l]{\important{$u\Rightarrow^0v$}} gdw. $u=v$
+        \item \makebox[1.5cm][l]{\important{$u\Rightarrow^{i+1}v$}} gdw. $\exists\: \w \in V^*: u\Rightarrow w\Rightarrow^iv$
+        \item \makebox[1.5cm][l]{\important{$u\Rightarrow^*v$}} gdw. $\exists\: i\in \Nz: u\Rightarrow^iv$
+    \end{itemize}
+\end{itemize}
+\subsection{Jede Grammatik induziert eine Formale sprache}
+\begin{itemize}
+    \item 
+\end{itemize}
 \end{document}
