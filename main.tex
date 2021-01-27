@@ -451,15 +451,22 @@ Für (nicht allzu) komplexe Regeln, wie ein Dokument auszusehen hat, bieten unse
     $S\circ R=\set{(x,z)\in M_1 \times M_3 \mid \exists\: y\in M_2: (x,y)\in R \land (y,z)\in S}$
     \item $\circ$ ist assiziativ:\\
     $(T\circ S)\circ R = T\circ(S\circ R)$
-\end{itemize}
-\subsection{Reflexiv-transitive Hülle}
-\begin{itemize}
     \item Ist $R\subseteq M\times M$ eine binäre Relation auf $M$, dann definiert man die \important{Potenz $R^i$}:
     \begin{align*}
     R^0 &= I_M\\
     \forall i \in \Nz:\:R^{i+1} &= R^i\circ R
     \end{align*}
-    \item Die \important{reglexiv-transitive Hülle} einer Relation $R$ ist definiert als: $R^*=\displaystyle{\bigcup_{i\in \Nz}}R^i$
+\end{itemize}
+\subsection{Eigenschaften von Relationen}
+Sei $R\subseteq M\times M$ eine Relation auf $M$
+\begin{itemize}
+    \item $R$ heißt \important{reflexiv}, wenn $I_M\subseteq R$, also wenn $\forall\: x \in M: (x,x)\in R$
+    \item $R$ heißt \important{transitiv}, wenn $R \circ R\subseteq R$, also wenn \\$\forall\: x,y,z \in M: (x,y)\in R \land (y,z) \in R \Rightarrow (x,z) \in R$
+\end{itemize}
+\subsection{Reflexiv-transitive Hülle}
+\begin{itemize}
+    
+    \item Die \important{reflexiv-transitive Hülle} einer Relation $R$ ist definiert als: $R^*=\displaystyle{\bigcup_{i\in \Nz}}R^i$
     \item \example{Sei $R=\set{(n, n+1)\mid n\in\Nz}\subseteq\Nz\times\Nz$}
     \begin{align*}
         R\circ R &= \set{(n, n+2)\mid n\in\Nz}\\
@@ -469,6 +476,16 @@ Für (nicht allzu) komplexe Regeln, wie ein Dokument auszusehen hat, bieten unse
         R^* &= \set{(n,m)\mid n\leq m}
     \end{align*}
 \end{itemize}
+\subsubsection{Eigenschaften der reflexiv-transisitven Hülle}
+\begin{itemize}
+    \item $R^*$ ist immer reflexiv\\
+    $I_M = R^0\subseteq R^*$
+    \item $R^*$ ist immer transitiv
+    \item $R^*$ ist die \textit{kleinste} Relation, die R umfasst und reflexiv und transitiv ist.
+\end{itemize}
+
+\newpage
+\section{\kapitel{13}{Prädikatenlogik - Erste Stufe}}
 
 
 \end{document}
