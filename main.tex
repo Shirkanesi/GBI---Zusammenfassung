@@ -7,7 +7,21 @@
 \usepackage{a4wide}
 \usepackage{xcolor}
 
-%Subitle
+%
+\newcommand{\myName}{Julian Keck | uwgmn}
+\newcommand{\creationYear}{2021}
+
+%Kopf und Fußzeile
+\usepackage{scrlayer-scrpage}
+\pagestyle{scrheadings}
+\ihead{}
+\chead{}
+\ohead{}
+\cfoot{\pagemark}
+\rofoot{\small{\textcopyright}  \myName $\;$-$\;$\creationYear}
+ %\pagemark
+
+%Subtitle
 \usepackage{relsize}
 \newcommand{\subtitlerelsize}{1} %relative size: integer value
 \newcommand{\subtitlelinesep}{0.1em} %line separation: a LaTeX length
@@ -60,6 +74,11 @@
 \newcommand{\w}{\textsf{w}}
 
 \newcommand{\wsp}{\word{\tiny $\sqcup$}}
+\newcommand{\wnot}{$\,$\word{$\lnot$}$\,$}
+\newcommand{\wand}{$\,$\word{$\land$}$\,$}
+\newcommand{\wor}{$\,$\word{$\lor$}$\,$}
+\newcommand{\wimpl}{$\,$\word{$\rightarrow$}$\,$}
+\newcommand{\val}[2]{val$\null_#1$(#2)}
 
 \newcommand{\Fbox}[1]{\fbox{\strut#1}}
 \setlength{\fboxsep}{1pt}% Just for this example
@@ -279,14 +298,99 @@ Aussagenlogische Formeln sind die Worte aus $A^*_{AL}$, die sinnvoll geklammert 
     $val_I(G) = val_I(H)$\\
     \example
     \begin{itemize}
-        \item \word{$\lnot$P$\lor \lnot$Q} und \word{$\lnot$(P$\land$Q)}
-        \item \word{$\lnot \lnot$P} und \word{P}
+        \item \word{\wnot P\wor \wnot Q} und \word{\wnot (P\wand Q)}
+        \item \word{\wnot\wnot P} und \word{P}
     \end{itemize}
+    \item Geschrieben wird dies als \important{$\equiv$}\\\example{\word{P} $\equiv$ \word{\wnot\wnot P}}
     \item Randbemerkung:\\
-    G=$\word{P}_{\word{0}} \word{$\land$} \word{P}_{\word{0}}$ und H=$\word{P}_{\word{2}} \word{$\land$} \word{P}_{\word{2}}$ sind nicht äquivalent, da $\word{P}_{\word{0}}$ und $\word{P}_{\word{2}}$ nicht in jeder Interpretation $I$ den selben Wert haben.
+    G=\word{P\wand P} und H=\word{Q\wand Q} sind nicht äquivalent, da \word{P} und \word{Q} nicht in jeder Interpretation $I$ den selben Wert haben.
     
 \end{itemize}
 
+\subsection{Modelle}
+\begin{itemize}
+    \item Eine Interpretation $I$ ist \important{Modell} einer Formel $G$, wenn $val_I(G)=$ \textbf{w} ist.
+    \item Interpretation I ist \important{Modell} der Formelmenge \strong{$\Gamma$}, wenn gilt:\\
+    $\forall G \in \Gamma: val_I(G)=$ \textbf{w}
+    \item $\Gamma \models G$ bedeutet: \anfuehrung{Jedes Modell von $\Gamma$ ist auch Modell von $G$}\\
+    Definiere: \\$H\models G \quad :\Leftrightarrow \quad \set{H}\models G$\\
+    \null\quad$\,\models G \quad :\Leftrightarrow \quad \set{} \models G \quad \Leftrightarrow \quad G$ ist für \important{alle} Interpretationen wahr ($G$ ist eine \strong{Tautologie})\\
+    \example{\word{P\wor \wnot P}}
+\end{itemize}
+\subsection{Beweisbarkeit}
+\begin{itemize}
+    \item Diese aussagenlogischen Formeln sind alle durch das in der Vorlesung vorgestellte Kalkül beweisbar.\\Dafür werden folgende drei Axiome (tautologe Formeln) definiert: 
+    \begin{itemize}
+        \item \word{(}G\wimpl \word{(}H\wimpl G\word{)}
+        \item \word{(}G\wimpl \word{(}H\wimpl K\word{))}\wimpl\word{((}G\wimpl H\word{)}\wimpl\word{(}G\wimpl K\word{))}
+        \item \word{(}\wnot H\wimpl\wnot G\word{)}\wimpl\word{((}\wnot H\wimpl G\word{)}\wimpl H\word{)}
+    \end{itemize}
+    Als Beweisabschluss gibt es auch noch den \important{Modus Ponens}:\\
+    (G\wand\word{(}G\wimpl H\word{)}) $\Rightarrow$ H
+\end{itemize}
 
+\newpage
+\section{\kapitel{6}{Induktives Vorgehen}}
+\subsection{...}
+Das induktive Vorgehen sollte aus HM und LA genug bekannt sein, wenn ich Zeit habe, kommt es hier noch dazu.\\
+Der Vollständigkeit halber sei es hier aber bereits jetzt erwähnt.
 
+\newpage
+\section{\kapitel{7}{Formale Sprachen}}
+\subsection{Begriffsklärung und Defnitionen}
+\begin{itemize}
+    \item Eine \important{formale Sprache} $L$ ist eine Teilmenge aller Wörter eines Alphabetes $A$.\\
+    $L\subseteq A^*$
+    \item Das Produkt / die Konkatenation zweier formaler Sprachen $L_1$ und $L_2$ ist folgendermaßen definiert:\\
+    $L_1L_2 := L_1\cdot L_2 := \set{w_1w_2 \mid w_1 \in L_1 \land w_2 \in L_2}$\\
+    \example{$L_1=\set{\word{a}} \qquad L_2=\set{\word{b}} \qquad L_1\cdot L_2=\set{\word{a}}\cdot\set{\word{b}} = \set{\word{a}\cdot\word{b}} = \set{\word{ab}}$}
+    \item $\set{\varepsilon}$ ist das neutrale Element der Konkatenation zweier formaler Sprachen:\\
+    $\set{\varepsilon}\cdot L = L = L\cdot\set{\varepsilon}$
+    \item Die Potenz formaler Sprachen ist naheliegend definiert:
+    \begin{align}
+        L^0 &= \set{\varepsilon}\\
+        \forall n\in\Nz: L^{n+1}&=L\cdot L^n
+    \end{align}
+\end{itemize}
+\subsection{Konkatenationsabschlüsse}
+\begin{itemize}
+    \item \important{Kleen-Star} / \important{kleensche Hülle}: 
+    $L^* = \displaystyle{\bigcup_{i\in\Nz}}L^i$
+    \item \important{$\varepsilon$-freier Konkatenationsabschluss}:
+    $L^+ = \displaystyle{\bigcup_{i\in\N}}L^i$
+    \item Es resultiert: $L^* = L^0 \cup L^+$
+    \item \strong{Warnung}: $L^+$ ist nur dann tatsächlich $\varepsilon$-frei, wenn gilt: $\varepsilon\notin L$
+    \item Außerdem gilt: $\set{}^*=\set{\varepsilon}$
+\end{itemize}
+
+\newpage
+\section{\kapitel{8}{Codierungen}}
+\strong{TODO!} Dieses Kapitel folgt noch, dafür habe ich aber momentan keine Lust\\Gleiches gilt für den Kram mit der MIMA
+
+\newpage
+\section{\kapitel{11}{Dokumente}}
+\subsection{Was sind Dokumente?}
+\begin{itemize}
+    \item Überall gibt es Inschriften
+    \begin{itemize}
+        \item Briefe, Kochrezepte, Zeitungsartikel
+        \item Seiten im WWW
+        \item Diese GBI-Zusammenfassung
+    \end{itemize}
+    \item DREI Aspekte sind für den Leser relevant:
+    \begin{itemize}
+        \item \important{Inhalt} des Textes
+        \item \important{Struktur} des Textes
+        \item \important{Erscheinungsbild} / (äußere) \important{Form} des Textes
+    \end{itemize}
+    \item In der Regel steht der \strong{Inhalt} für den Autor und Leser im Vordergrund.\\
+    Struktur und Form helfen nur beim Verständnis des Inhalts
+    \item \important{Dokumente} sind Texte mit Inhalt, Struktur und Form
+\end{itemize}
+\subsection{Formalisierung von Dokumenten}
+Für (nicht allzu) komplexe Regeln, wie ein Dokument auszusehen hat, bieten unsere formalen Sprachen keine ausreichende Methodik, um diese Regeln formal zu definieren. Wir benötigen \verweis{kontextfreie Grammatiken} 
+
+\newpage
+\section{Kontextfreie Grammatiken}
+\subsection{Definition kontextfreier Grammatiken}
 \end{document}
