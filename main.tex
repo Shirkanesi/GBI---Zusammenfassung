@@ -52,6 +52,7 @@
 \newcommand{\vektor}[1]{\begin{pmatrix}#1\end{pmatrix}} %Vetoren
 
 \newcommand{\leer}{$\varepsilon$}
+\newcommand{\deq}{$\dot{=}$}
 
 \newcommand{\kapitel}[2]{Kapitel #1 - \textsc{#2}}
 
@@ -78,7 +79,10 @@
 \newcommand{\wand}{$\,$\word{$\land$}$\,$}
 \newcommand{\wor}{$\,$\word{$\lor$}$\,$}
 \newcommand{\wimpl}{$\,$\word{$\rightarrow$}$\,$}
-\newcommand{\val}[2]{val$\null_#1$(#2)}
+\newcommand{\wall}{$\,$\word{$\forall$}$\,$}
+\newcommand{\wexist}{$\,$\word{$\exists$}$\,$}
+\newcommand{\val}[2]{val$\null_{#1}$(#2)}
+\newcommand{\valdib}[1]{val$\null_{D,I\beta}$#1}
 
 \newcommand{\Fbox}[1]{\fbox{\strut#1}}
 \setlength{\fboxsep}{1pt}% Just for this example
@@ -486,6 +490,142 @@ Sei $R\subseteq M\times M$ eine Relation auf $M$
 
 \newpage
 \section{\kapitel{13}{Prädikatenlogik - Erste Stufe}}
+\subsection{Einführung Prädikatenlogik}
+\begin{itemize}
+    \item Prädukatenlogische Formeln sind komplizierter aufgebaut als aussagenlogische Formeln
+    \item Sie bestehen aus drei Schritten:
+    \begin{itemize}
+        \item \important{Terme} (Variablensymbole, KOnstantensymbole, Funktionssymbole)
+        \item \important{Atomare Formeln} (aus Termen, mittels Relationssymbolen)
+        \item \important{Prädikatenlogische Formeln} (atomare Formeln unter Verwendung aussagenlogischer \\Konnektive und Quantoren)
+    \end{itemize}
+\end{itemize}
+\subsection{Terme}
+\begin{itemize}
+    \item \important{Variablensymbole}: Aplhabet $Var_{PL}$
+    \begin{itemize}
+        \item $\word{x}_i$ (für endlich viele $i\in \Nz$)
+        \item kurz auch manchmal \word{x}, \word{y}, \word{z}
+    \end{itemize}
+    \item \important{Konstantensymbole}: Alphabet $Const_{PL}$
+    \begin{itemize}
+        \item $\word{c}_i$ (für endlich viele $i\in \Nz$)
+        \item kurz auch manchmal \word{c}, \word{d}
+    \end{itemize}
+    \item \important{Funktionssymbole}: Alphabet $Fun_{PL}$
+    \begin{itemize}
+        \item $\word{f}_i$ (für endlich viele $i\in \Nz$)
+        \item kurz auch manchmal \word{f}, \word{g}, \word{h}
+        \item Jedes $\word{f}_i \in Fun_{PL}$ hat \important{Stelligkeit} $ar(\word{f}_i) \in \N$ [engl: \verweis{arity}]
+    \end{itemize}
+    \item $\Rightarrow A_{Ter}=\set{\word{(}, \word{,}, \word{)}} \cup Var_{PL}\cup Const_{PL}\cup Fun_{PL}$
+    \item Aus diesem Alphabet lassen sich alle Terme ableiten, allerdings auch viel Blödsinn. Die korrekte Syntax sei aber von nun an als bekannt vorausgesetzt.\\
+    \example Korrekte Terme: \quad \word{c\hphantom{y}} \qquad \word{f(x, g(c))} \qquad \word{g(c)}\\
+    \example Falsche$\;\;\;$ Terme: \quad \word{xy} \qquad \word{f)x,y( \hphantom{c()}} \qquad \word{c(x)}
+\end{itemize}
+
+\subsection{Atomare Formeln}
+\begin{itemize}
+    \item \important{Relationssymbole}: Alphabet $Rel_{PL}$
+    \begin{itemize}
+        \item \word{\deq} immer dabei
+        \item $\word{R}_i$ (für endlich viele $i\in \Nz$)
+        \item kurz auch manchmal \word{R}, \word{S}
+        \item Jedes $\word{R}_i \in Rel_{PL}$ hat \important{Stelligkeit} $ar(\word{R}_i) \in \N$ [engl: \verweis{arity}]
+    \end{itemize}
+    \item $A_{Rel} = A_{Ter}\cup Rel_{PL}$
+    \item Aus $A_{Rel}$ können alle gültigen atomaren Formeln abgeleitet werden. Die korrekte Syntax sein von nun an bekannt.\\
+    \example \hphantom{nicht }ableitbar: \quad \word{g(x)\deq f(x,g(z))} \qquad \word{S(c)} \qquad \word{R(y,c,g(x))}\\
+    \example nicht ableitbar: \quad \word{x\deq y\deq z} \qquad \word{R\deq f} \qquad \word{S(x)\deq S(x)}
+\end{itemize}
+
+\subsection{Prädikatenlogische Formeln}
+\begin{itemize}
+    \item $A_{For} = A_{Rel} \cup \set{\wnot, \wand, \wor, \wimpl, \wall, \wexist}$\\
+    \wall \quad \important{Allquantor}\\
+    \wexist \quad \important {Existenzquantor}
+    \item Aus $A_{For}$ lassen sich alle Prädukatenlogischen Formeln ableiten, die korrekte Syntax sein von nun an bekannt.
+\end{itemize}
+
+\subsection{\important{Interpretation} prädikatenlogischer Formeln}
+\begin{itemize}
+    \item Seien die Alphabete $Const_{PL}$, $Fun_{PL}$, $Rel_{PL}$ gegeben.
+    \item Die Interpretation $(D, I)$ besteht aus:
+    \begin{itemize}
+        \item Der nichtleeren Menge $D$, das \important{Universum} [engl: \verweis{domain}, dt: \verweis{Domäne}]
+        \item $I(\word{c}_i \in D$ für $\word{c}_i \in Const_{PL}$
+        \item $I(\word{f}_i : D^{ar(\word{f}_i}\to D$ für $\word{f}_i \in Fun_{PL}$
+        \item $I(\word{R}_i \subseteq D^{ar(\word{R}_i}\to D$ für $\word{R}_i \in Rel_{PL}$
+    \end{itemize}
+    \example{Mit $ar(\word{f}) = 2$ und $ar(\word{R})=2$:}
+    \begin{itemize}
+        \item $D = \Nz$
+        \item $I(\word{c})=0$
+        \item $I(\word{f}): \Nz^2\to\Nz:(x,y)\mapsto x+y$
+        \item $I(\word{R}) = \set{(x,y)\mid x\leq y} \subseteq\Nz^2$
+    \end{itemize}
+    \item Außerdem gibt es noch die \important{Variablenbelegung} $\beta: Var_{PL}\to D$\\
+    \example{$\beta(\word{x})=3$ und $\beta(\word{y})=42$}
+    \item Für $\beta$ gibt es noch eine besondere Notation:\\
+    Für $\beta: Var_{PL}\to D,\word{x}_i\in Var_{PL}$ und $d\in D$ sei;
+    \[ \beta^d_{\word{x}_i}: Var_{PL} \to D: \word{x}_j \mapsto 
+    \begin{cases}
+        \beta(\word{x}_j), &$falls $j\not=i\\
+        d, &$falls $j=i
+    \end{cases}
+    \]
+\end{itemize} 
+
+\subsection{Wahrheitswerte von prädikatenlogischen Formeln}
+\subsubsection{Ein Wert aus D für jeden Term}
+\begin{itemize}
+     \item Seien die Alphabete $Const_{PL}$, $Fun_{PL}$, $Rel_{PL}$, sowie die Interpretation $(D,I)$ und die \\Variablenbelegung $\beta$ gegeben.
+     \item Wir definieren \important{\valdib{}}$:L_{Ter}\cup L_{For}\to D \cup \mathbb{B}$\\
+     Für jeden Term $t\;\;$: \valdib{(t)}$\in D$\\
+     Für jede Formel $G$: \valdib{(G)}$\in \mathbb{B}$
+     \item \example
+     \begin{itemize}
+         \item $D=\Nz, I(\word{c})=0, I(f)=$Addition
+         \item $\beta(\word{x})=3$ und $\beta(\word{y})=42$
+         \item \valdib{(\word{f(y,c)})}\\$=I(\word{f})($\valdib{(\word{y})}, \valdib{(\word{c})}$)$
+         \\$=I(\word{f})(\beta(\word{y}), \beta(\word{c}))$
+         \\$=I(\word{f})(42, 0)$
+         \\$=42+0 = 42$
+     \end{itemize}
+\end{itemize}
+\subsubsection{Wahrheitswerte für atomare Formeln}
+\begin{itemize}
+    \item Gegeben sei die Interpretation $(D,I)$, sowie die Variablenbelegung $\beta$
+    \item Für eine atomare Formel $A \in L_{Rel}$ gibt es zwei Möglichkeiten:\\
+    \valdib{($\word{R}_i\word{(}t_1,\dots,t_k\word{)}$)}$=$
+    $\begin{cases}
+    w, & $falls $ (val_{D,I,\beta}(t_1),\dots, val_{D,I,\beta}(t_k)) \in I(\word{R}_i)\\
+    f, & $falls $ (val_{D,I,\beta}(t_1),\dots, val_{D,I,\beta}(t_k)) \notin I(\word{R}_i)
+    \end{cases}$
+\end{itemize}
+
+\subsubsection{Wahrheitswertt für quantifizierte Formeln}
+\begin{itemize}
+    \item Gegeben sei die Interpretation $(D,I)$, sowie die Variablenbelegung $\beta$
+    \item \valdib{$(\word{\wall x}_i H)$}$=
+    \begin{cases}
+        w, &$falls \important{für jedes} $ d\in D$ und $\important{\beta'}=\beta^d_{\word{x}_i}$ gilt: val$\null_{D,I,\important{\beta'}}(H)=w\\
+        f, &$sonst$
+    \end{cases}$
+    \item \valdib{$(\word{\wexist x}_i H)$}$=
+    \begin{cases}
+        w, &$falls \important{für mindestens ein} $ d\in D$ und $\important{\beta'}=\beta^d_{\word{x}_i}$ gilt: val$\null_{D,I,\important{\beta'}}(H)=w\\
+        f, &$sonst$
+    \end{cases}$
+\end{itemize}
+
+\subsection{Allgemeingültige Formeln}
+\begin{itemize}
+    \item Eine prädikatenlogische Formel $F$ ist \important{allgemeingültig}, wenn:\\
+    für jede (passende) Interpretation $(D, I)$ und jede passende Variablenbelegung $\beta$ gilt:\\
+    \valdib{(F)}$=w$
+    
+\end{itemize}
 
 
 \end{document}
