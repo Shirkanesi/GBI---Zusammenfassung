@@ -17,6 +17,7 @@
 \ihead{}
 \chead{}
 \ohead{}
+
 \cfoot{\pagemark}
 \rofoot{\small{\textcopyright}  \myName $\;$-$\;$\creationYear}
  %\pagemark
@@ -103,7 +104,6 @@
 \author{Julian Keck\\uwgmn}
 %\date{10.12.2020}
 \date{\today}
-
 \maketitle
 
 \tableofcontents
@@ -162,13 +162,13 @@
     \item \example{$\strongColor{A} = \{1,2,3\}$} ist eine Menge
     \item Auf Mengen kann man die bekannten Operationen wie Mengenschnitt ($\cap$), Mengenvereinigung ($\cup$) und Mengendifferenz ( $\setminus$ ) ausführen
     \item Teilmengenrelationen seien von jetzt an bekannt ($\subsetneq, \subseteq$); auf $\subset$ sollte verzichtet werden.
-    \item Sei $A$ eine endliche Menge. Dann bezeichnet $|A|$ die \strong{Kardinalität} von $A$, also genau die Anzahl der Elemente in $A$
+    \item Sei $A$ eine endliche Menge\footnote{Wir beschränken und in GBI auf endliche Mengen. Es gibt zwar auch die Kardinalität unendlicher Mengen, diese sind aber etwas komplizierter definiert und in GBI sowieso nicht wirklich hilfreich.}. Dann bezeichnet $|A|$ die \strong{Kardinalität} von $A$, also genau die Anzahl der Elemente in $A$
 \end{itemize}
 
 \subsection{Alphabet}
 \begin{itemize}
     \item Ein Alphabet ist eine nichtleere Menge von Zeichen oder Symbolen
-    \item Was ein Zeichen ist, sei nicht weiter spezifiziert, es handelt sich um einen elementaren Baustein von Inschriften
+    \item Was ein Zeichen ist, sei nicht weiter spezifiziert\footnote{Dies sollte aus dem täglichen Leben bereits bekannt sein. Beispielsweise ist \word{a} oder \word{x} ein Zeichen. Genauso aber auch \word{$\int$}}, es handelt sich um einen elementaren Baustein von Inschriften
     \item \example{}
     \begin{itemize}
         \item Das deutsche Alphabet
@@ -185,10 +185,10 @@
     \item Im Allgemeinen gilt: $(a, b) \neq (b, a)$
 \end{itemize}
 
-\subsection{Kartesisched Produkt}
+\subsection{Kartesische Produkt}
 \begin{itemize}
     \item Seien $A, B$ zwei Mengen
-    \item Das \strong{kartesische Produkt $A \times B$} ist definiert als: $A \times B = \{(a,b)\mid a\in A \and b\in B\}$ 
+    \item Das \important{kartesische Produkt $A \times B$} ist definiert als: $A \times B = \{(a,b)\mid a\in A \and b\in B\}$ 
     \item $A^2 := A \times A$
 \end{itemize}
 
@@ -262,7 +262,7 @@ Seien $P$ und $Q$ zwei Aussagen
     \item \makebox[2.5cm][r]{\textbf{Negation:}} \makebox[2.75cm][r]{\anfuehrung{nicht $P$}:} \strong{$\lnot P$}
     \item \makebox[2.5cm][r]{\textbf{logisches Und:}} \makebox[2.75cm][r]{\anfuehrung{$P$ und $Q$}:} \strong{$P \land Q$}
     \item \makebox[2.5cm][r]{\textbf{logisches Oder:}} \makebox[2.75cm][r]{\anfuehrung{$P$ oder $Q$}:} \strong{$P \lor Q$}
-    \item \makebox[2.5cm][r]{\textbf{Implikation:}} \makebox[2.75cm][r]{\anfuehrung{$P$ impliziert $Q$}:} \strong{$P \rightarrow Q$}\\\makebox[5.25cm][r]{\anfuehrung{Wenn P, dann Q}}
+    \item \makebox[2.5cm][r]{\textbf{Implikation:}} \makebox[2.75cm][r]{\anfuehrung{$P$ impliziert $Q$}:} \strong{$P \rightarrow Q$}\\\makebox[5.25cm][r]{\anfuehrung{Wenn $P$, dann $Q$}}
 \end{itemize}
 Der Wahrheitswert einer \important{zusammengesetzten Aussage} ist durch die Wahrheitswerte der \important{Teilaussagen} \strong{eindeutig} festgelegt. Es gibt keine Abhängigkeit vom konkreten Inhalt der Aussagen, auch nicht bei \anfuehrung{Wenn..., dann...}.
 
@@ -274,7 +274,7 @@ Der Wahrheitswert einer \important{zusammengesetzten Aussage} ist durch die Wahr
 \end{itemize}
 Definition des Alphabet der aussagenlogischen Formeln:\\\qquad $A_{AL} := \set{\word{(}, \word{)}, \word{$\lnot$}, \word{$\land$}, \word{$\lor$}, \word{$\rightarrow$}} \cup \set{$Aussagevariablen$}$
 
-Aussagenlogische Formeln sind die Worte aus $A^*_{AL}$, die sinnvoll geklammert und formuliert sind, dies wird im Weiteren nicht betrachtet.
+Aussagenlogische Formeln sind die Worte aus $A^*_{AL}$, die sinnvoll geklammert und formuliert sind, dies wird im Weiteren nicht betrachtet.\footnote{Die korrekte Klammerung sollte durch den gesunden Menschenverstand ableitbar sein.}
 
 \subsection{Boolsche Funktionen}
 \begin{itemize}
@@ -363,7 +363,7 @@ Der Vollständigkeit halber sei es hier aber bereits jetzt erwähnt.
     \item \important{$\varepsilon$-freier Konkatenationsabschluss}:
     $L^+ = \displaystyle{\bigcup_{i\in\N}}L^i$
     \item Es resultiert: $L^* = L^0 \cup L^+$
-    \item \strong{Warnung}: $L^+$ ist nur dann tatsächlich $\varepsilon$-frei, wenn gilt: $\varepsilon\notin L$
+    \item \strong{Warnung}: $L^+$ ist nur dann tatsächlich $\varepsilon$-frei, wenn gilt: $\varepsilon\notin L(=L^1)$
     \item Außerdem gilt: $\set{}^*=\set{\varepsilon}$
 \end{itemize}
 
@@ -453,7 +453,7 @@ Für (nicht allzu) komplexe Regeln, wie ein Dokument auszusehen hat, bieten unse
     \item Seien $R\subseteq M_1\times M_2$ und $S\subseteq M_2 \times M_3$ zwei Relationen
     \item Das \important{Produkt der Relationen} $R$ und $S$ ist definiert:\\
     $S\circ R=\set{(x,z)\in M_1 \times M_3 \mid \exists\: y\in M_2: (x,y)\in R \land (y,z)\in S}$
-    \item $\circ$ ist assiziativ:\\
+    \item $\circ$ ist assoziativ:\\
     $(T\circ S)\circ R = T\circ(S\circ R)$
     \item Ist $R\subseteq M\times M$ eine binäre Relation auf $M$, dann definiert man die \important{Potenz $R^i$}:
     \begin{align*}
@@ -492,10 +492,10 @@ Sei $R\subseteq M\times M$ eine Relation auf $M$
 \section{\kapitel{13}{Prädikatenlogik - Erste Stufe}}
 \subsection{Einführung Prädikatenlogik}
 \begin{itemize}
-    \item Prädukatenlogische Formeln sind komplizierter aufgebaut als aussagenlogische Formeln
+    \item Prädikatenlogische Formeln sind komplizierter aufgebaut als aussagenlogische Formeln
     \item Sie bestehen aus drei Schritten:
     \begin{itemize}
-        \item \important{Terme} (Variablensymbole, KOnstantensymbole, Funktionssymbole)
+        \item \important{Terme} (Variablensymbole, Konstantensymbole, Funktionssymbole)
         \item \important{Atomare Formeln} (aus Termen, mittels Relationssymbolen)
         \item \important{Prädikatenlogische Formeln} (atomare Formeln unter Verwendung aussagenlogischer \\Konnektive und Quantoren)
     \end{itemize}
@@ -519,7 +519,7 @@ Sei $R\subseteq M\times M$ eine Relation auf $M$
         \item Jedes $\word{f}_i \in Fun_{PL}$ hat \important{Stelligkeit} $ar(\word{f}_i) \in \N$ [engl: \verweis{arity}]
     \end{itemize}
     \item $\Rightarrow A_{Ter}=\set{\word{(}, \word{,}, \word{)}} \cup Var_{PL}\cup Const_{PL}\cup Fun_{PL}$
-    \item Aus diesem Alphabet lassen sich alle Terme ableiten, allerdings auch viel Blödsinn. Die korrekte Syntax sei aber von nun an als bekannt vorausgesetzt.\\
+    \item Aus diesem Alphabet lassen sich alle Terme ableiten, allerdings auch viel Blödsinn. Die korrekte Syntax sei aber von nun an als bekannt vorausgesetzt.\footnote{Die Ursache dafür, dass dies an dieser Stelle nicht weiter betrachtet wird, hat damit zu tun, dass die korrekte Darstellung dieser Grammatik einen großer Haufen Arbeit in \LaTeX  bedarf, wobei die eigentliche Aussage durch relativ einfach und Intuitiv ist.}\\
     \example Korrekte Terme: \quad \word{c\hphantom{y}} \qquad \word{f(x, g(c))} \qquad \word{g(c)}\\
     \example Falsche$\;\;\;$ Terme: \quad \word{xy} \qquad \word{f)x,y( \hphantom{c()}} \qquad \word{c(x)}
 \end{itemize}
@@ -576,7 +576,7 @@ Sei $R\subseteq M\times M$ eine Relation auf $M$
     \]
 \end{itemize} 
 
-\subsection{Wahrheitswerte von prädikatenlogischen Formeln}
+\subsection{Auswertung von prädikatenlogischen Formeln}
 \subsubsection{Ein Wert aus D für jeden Term}
 \begin{itemize}
      \item Seien die Alphabete $Const_{PL}$, $Fun_{PL}$, $Rel_{PL}$, sowie die Interpretation $(D,I)$ und die \\Variablenbelegung $\beta$ gegeben.
@@ -624,7 +624,56 @@ Sei $R\subseteq M\times M$ eine Relation auf $M$
     \item Eine prädikatenlogische Formel $F$ ist \important{allgemeingültig}, wenn:\\
     für jede (passende) Interpretation $(D, I)$ und jede passende Variablenbelegung $\beta$ gilt:\\
     \valdib{(F)}$=w$
-    
+\end{itemize}
+
+\subsection{Modelle prädikatenlogischer Formeln}
+\begin{itemize}
+    \item $(D,I)$ ist \important{Modell für $G\in L_{For}$}, wenn:\\
+    $(D,I)$ Interpretation von $G$ und für jedes $\beta$ \valdib{$(G)$}$=w$ ist.
+    \item $(D,I)$ ist \important{Modell für $\Gamma\subseteq L_{For}$}, wenn:\\
+    $(D,I)$ Modell für jedes $G\in\Gamma$ ist.
+    \item \important{$\Gamma\models G$}, wenn jedes Modell von $\Gamma$ auch Modell von $G$ ist.
+    \item \important{$H \models G$}, wenn $\set{H}\models G$
+    \item \important{$\models G$}, wenn $\set{}\models G$, also wenn $G$ allgemeingültig ist.
+\end{itemize}
+
+\subsection{Vorkommen von Variablensymbolen}
+\begin{itemize}
+    \item Wir betrachten nur die Vorkommen in Termen, nicht die Symbole unmittelbar hinter Quantoren
+    \item Die gleiche Variable kann an mehreren Stellen vorkommen
+    \item Wir unterscheiden zwischen \important{freien} und \important{gebundenen} Vorkommen
+    \item Definitionen:\\
+    Die Menge \important{fv$(G)$} der \important{frei} vorkommenden Variablen.\\
+    Die Menge \important{bv$(G)$} der \important{gebunden} vorkommenden Variablen.
+    %Seite 30
+\end{itemize}
+Sei $G$ eine atomare Formel
+\begin{itemize}
+    \item alle Vorkommen von Variablen sind frei
+    \item $bv(G)=\set{}$
+    \item $fv(G)=\set{$alle in $G$ vorkommende Variablen$}$
+\end{itemize}
+Sei $G=\wnot H$
+\begin{itemize}
+    \item $bv(G)=bv(H)\quad$ und $\quad fv(G)=fv(H)$
+\end{itemize}
+Sei $G \in \set{H_1\wand H_2,\; H_1\wor H_2,\;H_1\wimpl H_2}$
+\begin{itemize}
+    \item $bv(G)=bv(H_1)\cup bv(H_2)$ und $fv(G)=fv(H_1)\cup fv(H_2)$
+    \item Freies Vorkommen in $H_i$ ist freies Vorkommen in $G$
+    \item Gebundenes Vorkommen in $H_i$ ist gebundenes Vorkommen in $G$
+\end{itemize}
+Sei $G$ von der Form $\word{(\wall x}_iH\word{)}$ oder $\word{(\wexist x}_iH\word{)}$
+\begin{itemize}
+    \item $bv(G)=
+    \begin{cases}
+    bv(H)\cup\set{\word{x}_i}, &$falls $ \word{x}_i \in fv(H)\\
+    bv(H), &$sonst$
+    \end{cases}$
+    \item $fv(G)=fv(H)\setminus\set{\word{x}_i}$
+    \item in $G$ sind alle Vorkommen von $\word{x}_i$ gebunden
+    \item Alle anderen Variablen sind wie in H
+    \item Die Formel $G$ ist \important{geschlossen}, wenn $fv(G)=\set{}$
 \end{itemize}
 
 
