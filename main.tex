@@ -35,6 +35,10 @@
 \usepackage{amssymb}
 \usepackage{amsthm}
 
+% Graphen
+\usepackage{tikz}
+\usetikzlibrary{trees}
+
 \renewcommand\labelenumi{(\roman{enumi})}
 \renewcommand\theenumi\labelenumi
 
@@ -678,7 +682,293 @@ Sei $G$ von der Form $\word{(\wall x}_iH\word{)}$ oder $\word{(\wexist x}_iH\wor
 
 \subsection{Substitutionen}
 \begin{itemize}
-    \item $\sigma$ %Seite 33
+    \item Einie \important{Substitution} ist eine Abbildung $\sigma: Var_{PL} \to L_{Ter}$
+    \item Falls $\sigma$ durch Menge $S$ der Paare $S=\set{\word{x}_{i_j} / \sigma(\word{x}_{i_j} \mid 1 \leq j \leq k}$ eindeutig bestimmt ist, schreibe:\\
+    $\sigma_S = \sigma_\set{\word{x}_{i_j} / \sigma(\word{x}_{i_j}) \mid 1\leq j\leq k}$
+    \item \example{$\sigma_\set{\word{x/c, y/f(x)}}$ ist eine Abbildung mit: \\
+    $\sigma(\word{x})=\word{c}$\\
+    $\sigma(\word{y})=\word{f(x)}$\\
+    $\sigma(z)=z$ für alle $z\notin\set{\word{x}, \word{y}}$}
+    \item Analog gilt diese Definition auch für Formeln.\\
+    Hierbei werden alle \strong{freien} Variablenvorkommen substituiert (und zwar \important{gleichzeitig})
 \end{itemize}
+\newpage
+
+\section{\kapitel{14}{Algorithmen}}
+\subsection{Informelle Definition des Algorithmusbegriffs}
+\begin{itemize}
+    \item Endliche Beschreibung (man schreibt nur endlich viel Algorithmus, der immer gilt)
+    \item Elementare Anweisungen (jedem, mit der Materie vertrauten, ist klar, was gemeint ist)
+    \item Determinismus (die nächste Anweisung ist stets eindeutig festgelegt)
+    \item Endliche Eingabe $\longrightarrow$ endliche Ausgabe
+    \item Endlich viele Schritte
+    \item Beliebig große Eingaben sind (theoretisch) bearbeitbar
+    \item Nachvollziehbarkeit / Verständlichkeit\\
+    \important{Diese Definition ist sehr informell, gibt aber einen ersten Eindruck}
+\end{itemize}
+
+\subsection{Beweisbarkeit von Algorithmen -  Hoare-Kalkül / Hoare-Tripel}
+\subsubsection{Definition von Hoare-Tripeln}
+\begin{itemize}
+    \item \important{$\set{P}S\set{Q}$}
+    \begin{itemize}
+        \item $S$: Programmstück
+        \item $P$: \important{Vorbedingung}
+        \item $Q$: \important{Nachbedingung}
+    \end{itemize}
+    \item $P, Q$ sind \important{Zusicherungen}
+    \begin{itemize}
+        \item prädikatenlogische Formeln
+        \item frei vorkommende Variablen, die für das Programm benötigt werden
+    \end{itemize}
+    \item Wahrheit von Zusicherungen abhängig von Interpretation und Variablenbelegung
+    \item \important{\anfuehrung{relevante} Interpretation}: nur \textit{manche} interessieren
+    \begin{itemize}
+        \item \important{Grundbereich} $D$ [immer fest und explizit definiert]
+        \item \important{Funktions-} und \important{Relationssymbole} [naheliegend interpretiert]
+        \item \important{Konstantensymbole} beliebig interpretierbar in $D$
+        \begin{itemize}
+            \item Für \textit{alle} Interpretationen sollen Zusicherungen wahr sein
+            \item \anfuehrung{Eingaben} für das Programm
+        \end{itemize}
+        \item \important{Variablenbelegungen}
+        \begin{itemize}
+            \item beschreiben den Zustand des \textit{Speichers}
+            \item Veränderung durch Zuweisungen
+            \item Zuweisung: $x \leftarrow E$ für den Term $E$\\
+            vorher Variablenbelegung $\beta$, hinterher $\beta' = \beta^{val_{D,I,\beta}(E)}_x$\\
+            Es wird also nur der Wert von $x$ verändert.
+        \end{itemize}
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{Gültigkeit von Hoare-Tripeln}
+\begin{itemize}
+    \item $\set{P}S\set{Q}$ \important{gültig}, wenn für jede relevante Interpretation $I$ und jede Variablenbelegung $\beta$ gilt:\\
+    wenn \important{$val_{D,I,\beta }(P)=w$} und S endet und hinterher $\beta'$ vorliegt,\\
+    dann \important{$val_{D,I,\beta'}(Q)=w$}
+\end{itemize}
+
+\subsubsection{Axiome und Ableitungsregeln für Hoare-Tripel}
+\important{Zuweisungsaxiom}: Wenn
+\begin{itemize}
+    \item Zuweisung $x\leftarrow E$ mit $E\in L_{Ter}$
+    \item $Q$ Nachbedingung zu $x\leftarrow E$
+    \item (Die Substitution $\sigma_\set{{x/E}}$ ist kollisionsfrei für $Q$)
+\end{itemize}
+$\Rightarrow$ Dann gilt \important{HT-A}: \interpretation{$\set{\sigma_{\set{x/E}}(Q)}\;\; x \leftarrow E \;\;\set{Q}$}
+\begin{itemize}
+    \item Alternative Schreibweise: $\set{Q[x/E]} \;\; x \leftarrow E \;\; \set{Q}$
+\end{itemize}
+Ableitungsregel für \important{Verstärkung der Vorbedingung} und \important{Abschwächung der Nachbedingung}:
+\begin{itemize}
+    \item Wenn $P' \rightarrow P$ und $Q \rightarrow Q'$,
+    \item Dann \important{HT-E}: $\frac{\set{P}S\set{Q}}{\set{P'}S\set{Q'}}$
+\end{itemize}
+
+Ableitungsregel für \important{Hintereinanderausführung}
+\begin{itemize}
+    \item \important{HT-S}: $\frac{\set{P}S_1\set{Q} \quad \set{Q}S_2\set{R}}{\set{P}S_1;S_2\set{R}}$
+\end{itemize}
+
+Regel für \important{bedingte Anweisungen}
+\begin{itemize}
+    \item \important{HT-I}: $\frac{\set{P \land B}S_1\set{Q} \quad \set{P \land\lnot B}S_2\set{Q}}{\set{P}\; \word{if}\; B\; \word{then}\; S_1\; \word{else}\; S_2\; \word{fi}\; \set{Q}}$
+\end{itemize}
+
+Regel für \important{while - Schleifen}
+\begin{itemize}
+    \item \important{HT-W}: $\frac{\set{I\land B}S\set{I}}{\set{I}\;\word{while}\;B\;\word{do}\;S\;\word{od}\;\set{I\land \lnot B}}$
+    \item $I$ ist die \strong{Schleifeninvariante}, sie gilt vor der Schleife, nach jedem Schleifendurchlauf und nach dem Ende der Schleife.
+    \item $B$ ist die Schleifenbedingung, die ist nach der Schleife ungültig.
+\end{itemize}
+
+\newpage
+\section{Graphen}
+\subsection{Gerichtete Graphen}
+\begin{itemize}
+    \item Ein \important{Gerichteter Graph} ist ein Paar $G=(V,E)$
+    \begin{itemize}
+        \item \important{Knotenmenge $V$}, endlich und nichtleer \footnote{Knoten engl. \verweis{vertex}}
+        \item \important{Kantenmenge $E$}$\subseteq V\times V$ \footnote{Kante engl. \verweis{edge}}\\
+        Die Kantenmenge ist endlich, darf aber insbesondere auch \strongColor{leer} sein.
+    \end{itemize}
+    \item Das Aussehen eines Graphens kann sich unterscheiden.
+    \item \example{\\$V=\set{0,1,2,3}\\E=\set{(0,1),(0,3),(1,2)}$\\
+        \begin{tikzpicture}
+            \tikzstyle{every node} = [circle, draw]
+            
+            \node(0) at (0,0){0};
+            \node(1) at (1.5, 0){1};
+            \node(2) at (0, -1.5) {2};
+            \node(3) at (1.5, -1.5) {3};
+            
+            \foreach \from/\to in {0/1, 0/3, 1/2}
+                \draw [->] (\from) -- (\to);
+            
+            
+            \node(a) at (6,0){0};
+            \node(b) at (4.5, 0){1};
+            \node(c) at (8, 0) {2};
+            \node(d) at (5.5, -1) {3};
+            
+            \foreach \from/\to in {a/b, a/d}
+                \draw [->] (\from) -- (\to);
+            \draw [->] (b) to [out=30,in=150] (c);    
+            
+        \end{tikzpicture}
+    }
+\end{itemize}
+
+\subsubsection{Bäume}
+Bäume kamen schon mehrfach vor, daher hier nochmal zur Erinnerung:\\
+\begin{tikzpicture}[level distance=1cm,
+  level 1/.style={sibling distance=2cm},
+  level 2/.style={sibling distance=1cm}]
+  \tikzstyle{every node} = [circle, draw]
+  \node {\word{1}}
+    child {node {\word{10}}
+      child {node {\word{100}}}
+      child {node {\word{101}}}
+    }
+    child {node {\word{11}}
+    child {node {\word{110}}}
+      child {node {\word{111}}}
+    };
+\end{tikzpicture}
+
+\subsubsection{Teilgraphen}
+\begin{itemize}
+    \item $G'=(V',E')$ ist ein Teilgraph von $G=(V,E)$, wenn 
+    \begin{itemize}
+        \item $V'\subseteq V$
+        \item $E' \subseteq E\cap V'\times V'$\\
+        \important{Endpunkte von Kanten in $E'$ müssen in $V'$ sein!}
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{Pfade}
+\begin{itemize}
+    \item \important{$V^{(+)}$}: Menge der nichtleeren Listen von Elementen aus V
+    \item \important{$p=(v_0,\dots, v_n)\in V^{(+)}$} ist \important{Pfad}, wenn $\forall i \in \Z_n: \important{(v_i,v_{i+1}) \in E}$
+    \item \important{Länge eines Pfades}: Anzahl $n$ der \strong{Kanten}!
+    \item $v_n$ von $v_0$ \important{erreichbar}, wenn Pfad $p=(v_0,\dots, v_n)$ existiert
+    \item Länge 0 für Pfade erlaubt: $p=(v_0)$
+    \item Durch streichen endlich vieler Knoten am Anfang und/oder am Ende erhält man einen Teilpfad.\\Ein Knoten muss mindestens übrig bleiben.
+\end{itemize}
+
+\subsubsection{Zyklen}
+\begin{itemize}
+    \item Pfad mit $v_0=v_n$ heißt \important{geschlossen}
+    \item Ein geschlossener Pfad heißt \important{Zyklus}, wenn $n\geq 1$ ist.
+    \item Pfad $(v_0,\dots, v_n)$ heißt \important{wiederholungsfrei}, wenn
+    \begin{itemize}
+        \item Die Knoten $v_0,\dots, v_{n-1}$ und $v_1,\dots, v_{n}$ paarweise verschieden sind
+        \item $v_0$ und $v_n$ dürfen gleich sein.
+    \end{itemize}
+    \item \important{Einfacher Zyklus}: wiederholungsfreier Zyklus
+    \item \important{Azyklischer Graph}: kein Teilgraph ist Zyklus
+\end{itemize}
+
+\subsubsection{Strenger Zusammenhang}
+\begin{itemize}
+    \item Ein gerichteter Graph ist \important{streng zusammenhängend}, wenn\\
+    $\forall x,y \in V: (x,y)\in V^2 \;\exists$ Pfad von x nach y
+\end{itemize}
+
+\subsubsection{Knotengrad im gerichteten Graphen}
+\begin{itemize}
+    \item \important{Eingangsgrad} eines Knotens $y$ ist:\\
+    $d^-(\important{y})=|\set{x\mid(x,\important{y})\in E}|$
+    \item \important{Ausgangsgrad} eines Knotens $y$ ist:\\
+    $d^+(\important{x})=|\set{y\mid(\important{x}, y)\in E}|$
+    \item \important{Grad} eines Knotens ist:
+    $d(x) = d^-(x) + d^+(x)$
+\end{itemize}
+
+\subsubsection{Gerichtete Bäume}
+\begin{itemize}
+    \item Es gibt eine \important{Wurzel $r \in V$} mit der Eigenschaft:\\
+    \important{zu jedem Knoten $x$} existiert \important{\strong{genau} ein Pfad}
+    \item Man kann zeigen: Die Wurzel $r$ ist immer eindeutig
+    \item \important{Blätter} sind Knoten mit Ausgangsgrad $=0$
+    \item \important{innere Knoten} sind Knoten mit Ausgangsgrad $>0$
+\end{itemize}
+
+\subsection{Graphen als Relationen}
+\begin{itemize}
+    \item $G=(V,E)$ mit $E\subseteq V\times V$ (E binäre Relation auf V)
+    \item $(x,z)\in E^2 \iff $Pfad $(x,y,z)$ existiert
+    \item $(x,y) \in E^i \iff$ es existiert ein Pfad von $x$ nach $y$ der Länge $i$.
+\end{itemize}
+
+\subsection{Ungerichtete Graphen}
+\begin{itemize}
+    \item Ein \important{ungerichteter Graph} ist eine Struktur $U=(V,E)$ mit
+    \begin{itemize}
+        \item $V$: endliche nichtleere Menge von \important{Knoten}
+        \item $E$: Menge von \important{Kanten} mit $E\subseteq \set{\set{x,y}\mid x\in V \land y\in V}$
+        \item Es gibt keine Reihenfolge bei $\set{x,y}$
+        \item Beide Knoten gleichberechtigt
+    \end{itemize}
+    \item \important{adjezente Knoten} sind durch eine Kante miteinander verbunden
+    \item Bei einer \important{Schlinge} ist Start und Zielknoten identisch, es ergibt sich also:\\
+    $\set{x,y}$ mit $x=y \Rightarrow\set{x}$
+    \item Ein Graph ohne Schlinge heißt \important{schlingenfrei}
+\end{itemize}
+\subsubsection{Teilgraph}
+Der Teilgraph des ungerichteten Graphen ist analog zum gerichteten Fall definiert.
+
+\subsubsection{Wege}
+\begin{itemize}
+    \item \important{$V^{(+)}$}: Menge der nichtleeren Listen von Elementen aus V
+    \item \important{$p=(v_0,\dots, v_n)\in V^{(+)}$} ist \important{Weg}, wenn $\forall i \in \Z_n: \important{\set{v_i,v_{i+1}} \in E}$
+    \item \important{Länge eines Weges}: Anzahl $n$ der \strong{Kanten}!
+    \item $v_n$ von $v_0$ \important{erreichbar}, wenn Weg $p=(v_0,\dots, v_n)$ existiert
+    \item Länge 0 für Wege erlaubt: $p=(v_0)$
+    %\item Durch streichen endlich vieler Knoten am Anfang und/oder am Ende erhält man einen Teilpfad.\\Ein Knoten muss mindestens übrig bleiben.
+\end{itemize}
+
+\subsubsection{Kreise}
+\begin{itemize}
+    \item \important{geschlossener Weg} oder \important{Kreis}\\
+    $p=(v_0,\dots,v_n)$ mit $v_0=v_n$
+    \item \important{einfacher Kreis}
+    \begin{itemize}
+        \item wiederholungsfreier Kreis
+        \item mit mindestens \important{drei} verschiedenen Kanten
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{Zusammenhang}
+\begin{itemize}
+    \item Ein ungerichteter Graph $U=(V,E)$ heißt \important{zusammenhängend}, wenn der dazugehörige gerichtete Graph $G_U=(V,E_g)$ streng zusammenhängend ist.
+\end{itemize}
+
+\subsubsection{Ungerichtete Bäume}
+\begin{itemize}
+    \item Ein \important{ungerichteter Baum} ist ein ungerichteter Graph $U=(V,E)$, zu dem ein gerichteter Baum $G=(V,E')$ existiert mit $E=E'_u$
+    \item Verschiedene gerichtete Bäume induzieren den gleichen ungerichteten Baum
+    \item Wurzeln
+    \begin{itemize}
+        \item Im gerichteten Baum sind Wurzeln eindeutig zu identifizieren
+        \item Im ungerichteten Baum kann potentiell jeder Knoten Wurzel sein, diese muss daher explizit angegeben werden.
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{Knotengrad}
+\begin{itemize}
+    \item \important{Grad $d(x)$} des Knotens $x\in V$ im ungerichteten Graphen:
+    \begin{align*}
+        d(x)=|\set{y\mid y\not=x \land \set{x,y} \in E}| + \begin{cases}
+        2, &$falls$ \set{x,x} \in E\\
+        0, &$sonst$
+        \end{cases}
+    \end{align*}
+    \item Man zählt also die Anzahl der \anfuehrung{Kantenenden}, Schlingen werden \important{doppelt} gezählt.
+\end{itemize}
+
+
+
 
 \end{document}
