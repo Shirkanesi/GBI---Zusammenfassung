@@ -7,6 +7,10 @@
 \usepackage{a4wide}
 \usepackage{xcolor}
 
+
+\setcounter{tocdepth}{4}
+\setcounter{secnumdepth}{4}
+
 %
 \newcommand{\myName}{Julian Keck | uwgmn}
 \newcommand{\creationYear}{2021}
@@ -789,11 +793,11 @@ Regel für \important{while - Schleifen}
 \begin{itemize}
     \item Ein \important{Gerichteter Graph} ist ein Paar $G=(V,E)$
     \begin{itemize}
-        \item \important{Knotenmenge $V$}, endlich und nichtleer \footnote{Knoten engl. \verweis{vertex}}
-        \item \important{Kantenmenge $E$}$\subseteq V\times V$ \footnote{Kante engl. \verweis{edge}}\\
+        \item \important{Knotenmenge $V$}, endlich und nichtleer [\footnote{Knoten engl. \verweis{vertex}}]
+        \item \important{Kantenmenge $E$} $\subseteq V\times V$ [\footnote{Kante engl. \verweis{edge}}]\\
         Die Kantenmenge ist endlich, darf aber insbesondere auch \strongColor{leer} sein.
     \end{itemize}
-    \item Das Aussehen eines Graphens kann sich unterscheiden.
+    \item Das Aussehen eines Graphens kann sich unterscheiden, trotzdem handelt es sich noch um den selben Graphen.
     \item \example{\\$V=\set{0,1,2,3}\\E=\set{(0,1),(0,3),(1,2)}$\\
         \begin{tikzpicture}
             \tikzstyle{every node} = [circle, draw]
@@ -968,7 +972,192 @@ Der Teilgraph des ungerichteten Graphen ist analog zum gerichteten Fall definier
     \item Man zählt also die Anzahl der \anfuehrung{Kantenenden}, Schlingen werden \important{doppelt} gezählt.
 \end{itemize}
 
+\newpage
+\section{Algorithmen in Graphen}
+\subsection{Adjazenzmatrix}
+\begin{itemize}
+    \item Sein $G=(V,E)$ ein ungerichteter Graph mit $n = |V|$ Knoten.
+    \item Dann ist die \important{Adjazenzmatrix} $A$ eine $n\times n$-Matrix mit:\\
+    $a_{i,j}=\begin{cases}
+    1 &$falls $ (i,j)\in E\\
+    0 &$falls $ (i,j)\notin E
+    \end{cases}$
+    \item Salopp gesagt steht überall eine 1, wenn man in \textbf{genau} einem Schritt von $i$ nach $j$ kommt.\\
+    (Insbesondere auch bei Schlingen!)
+    \item Analog gilt das auch für den ungerichteten Fall
+    \item Wir wissen bereits, dass Graphen Relationen darstellen können, daher kann man Relationen auch als Matrix darstellen (auf die naheliegende Weise)
+    \begin{itemize}
+        \item Sei $M$ endliche Menge mit $|M|=n$ (naheliegend durchnummeriert)
+        \item $R\subseteq M\times M$ binäre Relation
+        \item Entsprechende Matrix: $A(R)$ ($n\times n$ groß)\\
+        $(A(R))_{i,j}=\begin{cases}
+        1 &$falls $(i,j)\in R$, also $ iRj\\
+        0 &$falls $(i,j)\notin R$, also $ \lnot(iRj)
+        \end{cases}$
+    \end{itemize}
+\end{itemize}
 
 
+\subsection{Signum-Fuktion}
+\begin{itemize}
+    \item sgn: $\R\to\R:sgn(x)=\begin{cases}
+        1&$falls $x>0\\
+        0&$falls $x=0\\
+        -1&$falls $x<0\\
+    \end{cases}$
+    \item Bei Matrizen funktioniert dies komponentenweise.
+\end{itemize}
+
+\subsection{Potenzen der Adjazenzmatrix}
+\begin{itemize}
+    \item Sei $G$ ein gerichteter Graph mit der Adjazenzmatrix $A$.\\
+    Für alle $k\in\Nz$ gilt: \\$(A^k)_{i,j}$ ist die Anzahl der Pfade der Länge $k$ in $G$ von $i$ nach $j$.
+    \item Es folgt: $sgn((A^k)_{i,j})=\begin{cases}
+        1&$falls in $G$ ein Pfad der Länge $k$ von $i$ nach $j$ existiert$\\
+        0&$falls in $G$ kein Pfad der Länge $k$ von $i$ nach $j$ existiert$
+    \end{cases}$
+    \item $sgn(A^k)$ repräsentiert also die Relation $E^k$
+\end{itemize}
+
+\subsection{Wegematrix}
+\begin{itemize}
+    \item Die Wegematrix ist die Matrix $W$ der Erreichbarkeitsrelation $E*$.
+    \begin{align*}
+        W_{i,j}&=
+    \begin{cases}
+        1 &$falls $(i,j)\in E^*\\
+        0 &$falls $(i,j)\notin E*
+    \end{cases}\\
+    &=
+    \begin{cases}
+        1 &$falls es in $G$ einen Pfad von $i$ nach $j$ gibt$\\
+        0 &$falls es in $G$ keinen Pfad von $i$ nach $j$ gibt$\\
+    \end{cases}
+    \end{align*}
+    \item Um die Wegematrix effizient berechnen zu können, muss man aber $E^*=\displaystyle{\bigcup_{\important{i\in\Nz}}}E^i$ umschreiben
+    \item Es folgt für $G=(V,E)$ mit $|V|=n \in\N$:
+    \begin{align*}
+        E^*=\bigcup_{i\in\Z_n}E^i = \bigcup_{i\in\Z_k}E^i \quad(\text{für }k\geq n)
+    \end{align*}
+    \item Sei $G$ ein gerichteter Graph, $A$ seine Adjazenzmatrix.\\
+    Dann gilt für alle $k\geq n-1$:
+    \begin{itemize}
+        \item Die Matrix $sgn\left(\displaystyle{\sum^k_{i=0}A^i}\right)$ repräsentiert die Relation $E^*$
+        \item Es gilt also: $W=sgn\left(\displaystyle{\sum^k_{i=0}A^i}\right)$ ist die Wegematrix von $G$.
+        \item Dieser Algorithmus ist nicht der effizienteste.\footnote{In der Vorlesung wurde in Kapitel 16 und 17 sehr viel darauf rumgeritten, wie effizient dieser Algorithmus nun ist, oder eben nicht. Dann wurde auch noch der Algorithmus von Strassen eingeführt. Dies dient alles nur zur Vorbereitung auf die "Quantitativen Aspekte von Algorithmen", im Wesentlichen ist dies aber nicht besonders relevant.}
+    \end{itemize}
+\end{itemize}
+
+\newpage
+\section{\kapitel{17}{Quantitative Aspekte von Algorithmen}}
+\subsection{Groß-O-Notation}
+\subsubsection{(Warum) keine exakten Angaben?}
+\begin{itemize}
+    \item Man will nicht
+    \begin{itemize}
+        \item Faulheit
+        \item Vergänglichkeit der genauen Werte (bald neuer Prozessor)
+        \item Mangelndes Interesse an genauen Werten
+    \end{itemize}
+    \item Man kann nicht
+    \begin{itemize}
+        \item Unkenntnis von Randbedingungen
+        \item Ungenauigkeiten im \anfuehrung{Algorithmus}\footnote{Wobei es diese ja eigentlich bei einem deterministischen Algorithmus nach unserer Definition gar nicht geben darf}    
+    \end{itemize}
+    \item Man \anfuehrung{soll} nicht
+    \begin{itemize}
+        \item Unabhängigkeit von konkreter Probleminstanz
+        \item Unabhängigkeit von Programmiersprache
+        \item Unabhängig von Prozessor
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{Genauigkeit}
+\begin{itemize}
+    \item Ignorieren konstanter Faktoren (genaue Prozessorgeschwindigkeit gibt nur einen konstanten Vorfaktor)
+    \item Nur obere (bzw. untere) Schranke angeben (z.B. nur schlechtesten Fall analysieren)
+\end{itemize}
+
+\subsubsection{Asymptotisch gleichschnelles Wachstum}
+Notation:
+\begin{itemize}
+    \item $\R_+$: Menge der positiven reellen Zahlen (ohne 0)
+    \item $\R_0^+$: Menge der nichtnegativen reellen Zahlen [$\R_0^+=\R_+\cup\set{0}$]
+    \item es werden nur Funktionen $f:\Nz\to\R_0^+$ betrachtet
+\end{itemize}
+Definition:
+\begin{itemize}
+    \item Die Funktion $g:\Nz\to\R_0^+$ wächst \important{asymptotisch genauso schnell} wie $f:\Nz\to\R_0^+$, wenn gilt:
+    \[
+        \exists c,c'\in\R_+\;\exists n_0\in\Nz\;\forall n\geq n_0\;:\;\important{cf(n)\leq g(n)\leq c'f(n)}
+    \]
+    \item schreibe: $\important{f\asymp g}$ oder $\important{f(n)\asymp g(n)}$
+    \item \example{
+        \begin{itemize}
+            \item $f: n\mapsto 3n^2$ und $g: n\mapsto 10^{-2}n^2$
+            \item Behauptung: $f\asymp g$
+            \item Setze $c=10^{-3}$ und $c'=1$, sowie $m_0=0$:\\
+            $cf(n)\leq g(n)\leq c'f(n)$\\
+            $10^{-3}\cdot 3n^2\leq 10^{-2}n^2\leq 3n^2$
+        \end{itemize}
+    }
+    \item Regel: $\forall f:\Nz\to\R_0^+\;\forall a,b\in \R_+:\;af\asymp bf$
+\end{itemize}
+\subsubsection{Äquivalenzrelation $\asymp$}:
+\begin{itemize}
+    \item $\asymp$ ist eine Äquivalenzrelation, d.h.\\
+    $\asymp$ ist
+    \begin{itemize}
+        \item reflexiv ($f\asymp f$ gilt immer)
+        \item transitiv ($(f\asymp g \land g \asymp h) \iff f\asymp h$)
+        \item symmetrisch ($f\asymp g \iff g\asymp f$)
+    \end{itemize}
+\end{itemize}
+\subsubsection{Groß $\Theta$}
+\begin{itemize}
+    \item \important{$\Theta(f)$}: Menge aller Funktionen, die (im Sinne von $\asymp$) zu $f$ äquivalent sind.
+    \item $\Theta(f)=\set{g \mid f\asymp g}$
+    \item Rechenregel: $\forall\; f:\Nz\to\R_0^+\;\forall a,b\in\R_+:\;\Theta(af)=\Theta(bf)$ 
+\end{itemize}
+
+\subsubsection{Obere Schranke O}
+\begin{itemize}
+    \item \important{$O(f)=\set{g\mid\exists c\in\R_+\;\exists n_0\in\Nz\;\forall n\geq n_0:\;g(n)\leq cf(n)}$}
+    \item Schreibweisen:\\
+    $g\preceq f \iff g\in O(f)$
+\end{itemize}
+
+\subsubsection{Untere Schranke $\Omega$}
+\begin{itemize}
+    \item \important{$\Omega(f)=\set{g\mid\exists c\in\R_+\;\exists n_0\in\Nz\;\forall n\geq n_0:\;g(n)\geq cf(n)}$}
+    \item Schreibweisen:\\
+    $g\succeq f \iff g\in \Omega(f)$
+\end{itemize}
+
+\subsubsection{Rechenregeln für obere und untere Schranken}
+\begin{itemize}
+    \item Für alle Funktionen $f,g: \Nz\to\R_0^+$ gilt:\\
+    $g\in O(f) \iff f\in\Omega(g)$, also $g\preceq f\iff f\succeq g$
+    \item $\Theta(f) = O(f)\cap\Omega(f)$, also:\\
+    $g\asymp f \iff (g\preceq f \land g \succeq f)$
+    \item Es gilt:\\
+    Wenn $g_1\preceq f_1$ und $g_2\preceq f_2$, dann $g_1+g_2 \preceq f_1+f_2$
+    \item $\forall f_1,f_2:\Nz\to\R_0^+$ gilt:\\
+    $O(f_1)+O(f_2)=O(f1+f2)$
+    \item \example $O(n^3+n^2)=O(n^3)$
+\end{itemize}
+
+\subsubsection{Komplexoperationen}
+\begin{itemize}
+    \item Sind $M_1$ und $M;_2$ Mengen, deren Elemente man addieren bzw. multiplizieren kann, dann sei:
+    \begin{align*}
+        M_1+M_2 &= \set{g_1+g_2 \mid g_1 \in M_1 \land g_2 \in M_2}\\
+        M_1\cdot M_2 
+        &= \set{g_1 \hphantom{\cdot} \cdot \hphantom{\cdot} g_2 \mid g_1\in M_1 \land g_2\in M_2}
+    \end{align*}
+    \item Diese Definition ist analog zum Produkt formaler Sprachen
+    \item Es gilt außerdem: \\
+    statt $\set{n^3}+O(n^2)$ schreibt man $n^3+O(n^2)$
+\end{itemize}
 
 \end{document}
