@@ -148,7 +148,7 @@
     \begin{itemize}
         \item \word{10001} interpretieren wir als \interpretation{zehntausendundeins}
         \item \word{10001} kann man auch als \interpretation{17} interpretieren (binär).
-        \item oder auch als \interpretation{11} (Hexadezimaldarstellung der 17)
+        \item oder auch als \interpretation{65537} (\word{10001} als Hexadezimaldarstellung)
     \end{itemize}
     \item Der Rechner hat \dq keine Ahnung\dq{}, was er da tut, macht es aber trotzdem.
 \end{itemize}
@@ -166,7 +166,7 @@
 \begin{itemize}
     \item Eine Menge ist ein \dq Behälter\dq{} mit \dq Objekten\dq{}
     \item Diese Definition ist gefährlich \verweis{Russle's-Paradoxon}
-    \item Eine Menge kann ein Objekt enthalten oder nicht (nicht beides und auch keines von beidem)
+    \item Eine Menge kann ein Objekt enthalten oder nicht (nicht beides und auch nicht keines von beidem)
     \item \example{$\strongColor{A} = \{1,2,3\}$} ist eine Menge
     \item Auf Mengen kann man die bekannten Operationen wie Mengenschnitt ($\cap$), Mengenvereinigung ($\cup$) und Mengendifferenz ( $\setminus$ ) ausführen
     \item Teilmengenrelationen seien von jetzt an bekannt ($\subsetneq, \subseteq$); auf $\subset$ sollte verzichtet werden.
@@ -196,7 +196,7 @@
 \subsection{Kartesische Produkt}
 \begin{itemize}
     \item Seien $A, B$ zwei Mengen
-    \item Das \important{kartesische Produkt $A \times B$} ist definiert als: $A \times B = \{(a,b)\mid a\in A \and b\in B\}$ 
+    \item Das \important{kartesische Produkt $A \times B$} ist definiert als: $A \times B = \{(a,b)\mid a\in A\land \and b\in B\}$ 
     \item $A^2 := A \times A$
 \end{itemize}
 
@@ -216,7 +216,7 @@
     \begin{itemize}
         \item $\Z_n :=$ "die n kleinsten nichtnegativen ganzen Zahlen"\\
         $\Z_n := \set{i \in \N \mid 0\leq i < n}$\\
-        $\Z_0 = \set{}, \Z_1 = \set{0}, \Z_4 = \set{0,1,2,3}$
+        \example$\Z_0 = \set{}, \Z_1 = \set{0}, \Z_4 = \set{0,1,2,3}$
         \item Ein Wort über dem Alphabet $A$ ist eine \important{surjektive Abbildung}:\\
         $\w: \Z_n \to B$  mit $B\subseteq A$ 
         \item \important{$|w| := n$} ist die Länge des Wortes
@@ -229,7 +229,7 @@
         \item $A^3 = \set{\word{aaa,aab,aba,abb,baa,bab,bba,bbb}}$
     \end{itemize}
     \item Die Menge aller Wörter über dem Alphabet $A$ wird als $A^*$ geschrieben\\
-    oder $\displaystyle{A^* = \bigcup_{i\in \Nz}A^i}$, wenn man eine Notation ohne Pünktchen bevorzugt.
+    $A^*=A^0\cup A^1\cup\dots$ oder $\displaystyle{A^* = \bigcup_{i\in \Nz}A^i}$, wenn man eine Notation ohne Pünktchen bevorzugt.
     \item Die Konkatenation bezeichnet die Aneinanderreihung mehrerer Worte, geschrieben wird diese durch \strong{$\cdot$}\\
     \example\\ $x = \word{Hallo}, y = \word{Welt}$\\
     $xy:=x\cdot y = \word{HalloWelt}$
@@ -377,6 +377,89 @@ Der Vollständigkeit halber sei es hier aber bereits jetzt erwähnt.
 
 \newpage
 \section{\kapitel{8}{Codierungen}}
+\subsection{Darstellung von Zahlen}
+\begin{itemize}
+    \item Seien $Z_{10}=\set{\word{0},\dots,\word{9}}$ die Ziffern.
+    \item Die Bedeutung einer Ziffer als Zahl wird durch $num_{10}:Z_{10}\to\Z_{10}$ dargestellt.
+    \item $Num_{10}:Z_{10}^*\to\Nz$ gibt die Bedeutung einer Ziffernfolge:\\
+    $Num_{10}(x_{k-1}\cdot\cdot\cdot x_1x_0)=10^{k-1}\cdot num(x_{k-1})+\dots 10^1\cdot num_{10}(x_1)+10^0\cdot num_{10}(x_0)$\\
+    Bzw.:\\
+    $Num_{10}(\varepsilon)=0\qquad Num_{10}(wx)=10\cdot Num_{10}(w)+ num_{10}(x)$
+    \item Analoge Definitionen gelten auch für andere Basen, das Ziffernalphabet bis Basis 16 lautet:\\
+    $\set{\word{0},\word{1},\word{2},\word{3},\word{4},\word{5},\word{6},\word{7},\word{8},\word{9},\word{A},\word{B},\word{C},\word{D},\word{E},\word{F}}$
+    \item Es folgt zwangsläufig eine Uneindeutigkeit\footnote{Hierauf wurde bereits in Kapitel 2 - Information eingegangen.} von Zeichenketten wie \word{111}:
+    \begin{itemize}
+        \item $Num_{2\hphantom{0}}(\word{111}) = $ \anfuehrung{sieben}
+        \item $Num_{8\hphantom{0}}(\word{111}) = $ \anfuehrung{dreiundsiebzig}
+        \item $Num_{10}(\word{111}) = $ \anfuehrung{einhundertelf}
+        \item $Num_{16}(\word{111}) = $ \anfuehrung{zweihundertdreiundsbiebzig}
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{Division mit Rest}
+Operationen \important{div} und \important{mod}.\\
+Es seien $x\in\Nz$ und $y\in\N$:
+\begin{itemize}
+    \item $x$\textbf{ mod }$y \in \Nz$\\
+    Rest der ganzzahligen Division $x$ durch $y$\\
+    $0\leq(x$ mod $ y)<y$
+    \item $x$\textbf{ div }$y \in \Nz$\\
+    Ergebnis der ganzzahligen Division $x$ durch $y$
+    \item Es gilt:\\
+    $x=y\cdot (x$ div $y)+(x$ mod $y)$
+\end{itemize}
+
+\subsubsection{k-äre Darstellung von Zahlen}
+Sei $k\in\Nz$ und $k\geq2$
+\begin{align*}
+    Repr_k:\Nz&\to\Z_k\\
+    n&\mapsto 
+    \begin{cases}
+        repr_k(n), &\text{falls } n<k\\
+        Repr_k(n\text{ div }k)\cdot repr_k(n\text{ mod }k), &\text{falls }n\geq k
+    \end{cases}
+\end{align*}
+Es gilt: $Num_k(Repr_k(n))=n$, umgekehrt auch, außer, dass führende Nullen wegfallen.
+
+\subsection{Zweierkomplementdarstellung [ZKPL]}
+Sei $l\in\N$:
+\begin{itemize}
+    \item $\mathbb{K}_l = \set{x\in\Z\mid -2^{l-1}\leq x\leq 2^{l-1}-1}$\\
+    \example{$\mathbb{K}_4=\set{-2,-1,0,1}$}
+    \item $Zkpl_l: \mathbb{K}_l\to\set{\word{0}, \word{1}}^l$
+    \[
+        Zkpl_l(x)=
+        \begin{cases}
+            \word{0}bin_{l-1}(x), &\text{falls }x\geq 0\\
+            \word{1}bin_{l-1}(2^{l-1}+x), &\text{falls }x<0
+        \end{cases}
+    \]
+\end{itemize}
+
+\subsection{Notationen für Funktionen}
+\begin{itemize}
+    \item Menge aller Funktionen von $A$ nach $B$: \important{$B^A:=\set{f\mid f \text{ ist Funktion } f:A\to B}$}\\
+    Für endliche Mengen gilt: $|B^A|=|B|^{|A|}$
+    \item Die Funktionskomposition, Identität, Umkehrfunktion, Links- und Rechtsinverse sind aus der LA und HM bekannt, und seinen von nun auch hier als bekannt vorausgesetzt.
+\end{itemize}
+
+\subsection{Übersetzungen}
+\begin{itemize}
+    \item Eine Übersetzung verändert den Inhalt der Nachricht nicht. Lediglich die Darstellung wird verändert.
+    \item Gründe:
+    \begin{itemize}
+        \item \important{Legalität}: nur bestimmter Zeichensatz erlaubt
+        \item \important{Lesbarkeit}: vergleiche \word{A3} mit \word{10100011}
+        \item \important{Verschlüsselung}: keine Lesbarkeit für Ausenstehende
+        \item \important{Kompression}: Übersetzungen können kürzer sein, ohne das Alphabet zu vergrößern. \example{Huffman-Codes}
+        \item \important{Fehlererkennung} oder \important{Fehlerkorrektur}
+    \end{itemize}
+\end{itemize}
+
+\subsection{Codierungen}
+%Seite 46
+
+
 \strong{TODO!} Dieses Kapitel folgt noch, dafür habe ich aber momentan keine Lust\\Gleiches gilt für den Kram mit der MIMA
 
 \newpage
@@ -1159,5 +1242,101 @@ Definition:
     \item Es gilt außerdem: \\
     statt $\set{n^3}+O(n^2)$ schreibt man $n^3+O(n^2)$
 \end{itemize}
+
+\subsection{Teile und herrsche / divide and conquer}
+\subsubsection{Definition divide and conquer}
+\begin{itemize}
+    \item Probleminstanz wird in kleine Teile zerlegt
+    \item Diese Teile werden Rekursiv nach gleichem Verfahren bearbeitet
+    \item Gesamtergebnis wird aus den Teilergebnissen konstruiert
+\end{itemize}
+
+\subsubsection{Laufzeit von Teile-und-Herrsche-Algorithmen}
+\begin{itemize}
+    \item Problem der Größe $n$ wird zerhackt in \\konstante Anzahl a von Teilproblem gleicher Größe $\frac{n}{b}$
+    \item Aus diesen Teilergebnissen wird Gesamtergebnis zusammengesetzt
+    \item Aufteilen und Zusammensetzen \anfuehrung{kostet} $f(n)$
+    \item Abschätzen der Laufzeit $T(n)$ liefert ungefähr:
+    \[\important{T(n)=aT(\frac{n}{b})+f(n)}\]
+\end{itemize}
+
+\subsubsection{Master-Theorem}
+\begin{itemize}
+    \item Fall 1: Wenn \important{$f(n)\in O(n^{(log_ba)-\varepsilon})$}$\;(\varepsilon>0)$, dann $T(n)\in \Theta(n^{log_ba})$
+    \item Fall 2: Wenn \important{$f(n)\in O(n^{(log_ba)})$}, dann $T(n)\in \Theta(n^{log_ba}log\:n)$
+    \item Fall 3: Wenn \important{$f(n)\in O(n^{(log_ba)+\varepsilon})$}$\;(\varepsilon>0)$, dann $T(n)\in \Theta(f(n))$,\\
+    falls zusätzlich auch $\exists \:0<d<1:\;\important{af(\frac{n}{b})\leq df(n)}$ gilt.
+    \item Diese Fallunterscheidung ist nicht vollständig!
+\end{itemize}
+
+\newpage
+\section{\kapitel{18}{Endliche Automaten}}
+\subsection{Moore-Automat}
+Im WS2020/21 werden nur \important{Moore-Automaten} betrachtet. Mealy-Automaten wurden weggelassen.
+\subsubsection{Bestandteile/Definition Moore-Automat}
+\begin{itemize}
+    \item endliche \important{Zustandsmenge $Z$}\\
+    Alle Zustände des Automaten
+    \item \important{Anfangszustand} $z_0\in Z$\\
+    Der Zustand, indem die \anfuehrung{Ausführung} beginnt.
+    \item \important{Eingabealphabet} $X$\\
+    Das Alphabet der eingegebenen Wörter
+    \item \important{Zustandüberführungsfunktion} $f:Z\times X\to Z$\\
+    Gibt an, welcher Zustand kommt, nachdem in dem gegebenen Zustand das Eingegebene Wort eingegeben wurde. 
+    \item \important{Ausgabealphabet} Y\\
+    Alphabet der ausgegebenen Wörter.
+    \item \important{Ausgabefunktion} $h: Z\to Y^*$\\
+    Gibt an, welches Wort der angegebene Zustand ausgibt. 
+\end{itemize}
+
+\subsubsection{Erweiterung Zustandsüberführungsfunktion}
+\begin{itemize}
+    \item $f_*$ für den am Ende der Ausführung erreichten Zustand\\
+    $f_*:Z\times X^*\to Z$ mit\\
+    $f_*(z, \varepsilon) = z$ und $f_*(z, wx)=f(f_*(z,w),x)\quad$ ($w\in X^*, x\in X$)
+    \item $f_{**}$ für alle durchlaufenen Zustände\\
+    $f_{**}:Z\times X^*\to Z^*$ mit\\
+    $f_{**}(z,\varepsilon)=z$ und $f_{**}(z,wx)=f_{**}(z,w)\cdot f_*(z,wx)\quad$ ($w\in X^*, x\in X$)
+\end{itemize}
+
+\subsubsection{Erweiterung Ausgabefunktion}
+\begin{itemize}
+    \item \anfuehrung{letzte Ausgabe}: \important{$g_*=h\circ f_*$}:\\
+    $g_*(z,w)=h(f_*(z,w))$
+    \item \anfuehrung{alle Ausgaben}: \important{$g_{**}=h^{**}\circ f_{**}$} (induzierter Homomorphismus):\\
+    $g_{**}(z,w)=h^{**}(f_{**}(z,w))$\\
+    \textit{Es werden alle Ausgaben von Beginn bis Ende hintereinander konkatiniert}
+\end{itemize}
+
+\subsection{Endliche Akzeptoren}
+\begin{itemize}
+    \item Immer genau ein Bit als Ausgabe:\\
+    $\forall z \in Z: h(z)\in Y=\set{\word{0}, \word{1}}$
+    \\Interpretiert wird \word{1} als \interpretation{gut/korrekt} und \word{0} als \interpretation{schlecht/falsch}
+\end{itemize}
+
+\subsubsection{Formalisierung}
+\begin{itemize}
+    \item Spezifikation einer Menge $F$: \important{Akzeptierende Zustände}
+    \item $F=\set{z\in Z\mid h(z)=\word{1}}$
+    \item Alle $z\in (Z\setminus F)$ sind \important{ablehnende Zustände}
+    \item ablehnende Zustände werden im Schaubild mit einem Kreis gezeichnet, akzeptierende Zustände bekommen einen \anfuehrung{Doppelkringel}
+\end{itemize}
+
+\subsubsection{Akzeptiert und Ablehnen}
+\begin{itemize}
+    \item Ein Wort $w\in X^*$ wird \important{akzeptiert}, falls $f_*(z_0, w)\in F$
+    \item Ein Wort $w\in X^*$ wird \important{abgelehnt}, falls $f_*(z_0, w)\notin F$
+    \item Die von einem Akzeptor $A=(Z,z_0,X,f,F)$ \important{akzeptierte} oder \important{erkannte formale Sprache} ist\\
+    $L(A)=\set{w\in X^*\mid f_*(z_0,w)\in F}$
+    \item Es handelt sich um ganz einfache Syntaxanalyse.
+\end{itemize}
+
+\subsubsection{Nicht erkennbare Formale Sprachen}
+\example{Die formale Sprache $L=\set{\word{a}^k\word{b}^k \mid k\in\Nz}$ kann nicht von einem endlichen Akzeptor erkannt werden.}\\
+Beweisansatz: Wähle $k=$Anzahl der Zustände des Akzeptors.\\
+Dann \textbf{muss} der Akzeptor irgendwo \anfuehrung{im Kreis laufen}, kann also nicht mehr mitzählen, wie oft er bereits im Kreis gelaufen ist. Dadurch lassen sich Worte konstruieren, die fälschlicher Weise als korrekt angenommen werden.
+
+%Seite 16
 
 \end{document}
