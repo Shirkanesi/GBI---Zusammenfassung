@@ -434,6 +434,7 @@ Sei $l\in\N$:
             \word{1}bin_{l-1}(2^{l-1}+x), &\text{falls }x<0
         \end{cases}
     \]
+    \item Man kann die Zkpl-Darstellung auch erhalten, indem man die Zahl binär aufschreibt, alle Bits einmal \textit{kippt} und dann 1 addiert.
 \end{itemize}
 
 \subsection{Notationen für Funktionen}
@@ -457,10 +458,142 @@ Sei $l\in\N$:
 \end{itemize}
 
 \subsection{Codierungen}
-%Seite 46
+\begin{itemize}
+    \item Wenn $f$ injektiv ist, gibt es von $f(x)$ einen \textbf{eindeutigen} Weg zurück nach $x$
+    \item \important{Codierung}: Übersetzung mit injektivem $f$
+    \item \important{Codewörter}: die $f(x)$
+    \item \important{Code}: $\set{f(w)\mid w\in L_A}$
+    \item Wenn $L_A$ unendlich ist, kann man nicht alle Möglichkeiten aufzählen\\
+    $\Rightarrow$ Homomorphismen und Block-Codierung bieten Auswege.
+\end{itemize}
+
+\subsubsection{Homomorphismen}
+Ein \important{Homomorphismus} ist eine Abbildung $h:A^*\to B^*\quad$($A,B$ Alphabete) mit:\\
+$\forall w_1,w_2\in A^*:\;h(w_1w_2)=h(w_1)h(w_2)$\\
+Gilt außerdem: $\forall x\in A:\;h(x)\not=\varepsilon$, so ist $h$ $\varepsilon$-frei.\\
+$\Rightarrow$ Die Bilder der einzelnen Zeichen legen den Homomorphismus eindeutig fest.\\
+Damit die Decodierung fehlerfrei Funktioniert, müssen die Codewörter auch noch \important{präfixfrei} sein\footnote{Auf dies wird in der Vorlesung noch sehr viel eingegangen und an einigen Beispielen (z.B. auch Unicode) weiter erläutert. Für die Klausur sollten diese Informationen aber nicht sonderlich relevant sein.}.
 
 
-\strong{TODO!} Dieses Kapitel folgt noch, dafür habe ich aber momentan keine Lust\\Gleiches gilt für den Kram mit der MIMA
+\subsection{Huffman-Codierung}
+\begin{itemize}
+    \item gegeben ist ein Alphabet $A$ und ein Wort $w\in A^*$
+    \item Huffman-Codierung ist nun:
+    \begin{itemize}
+        \item eine Abbildung $h:A^*\to\set{\word{0},\word{1}}$
+        \item $\varepsilon$-freier Homomorphismus
+        \item $h$ wird typischerweise auf $w$ angewendet
+    \end{itemize}
+    \item Bei der Huffman-Codierung werden häufige Symbole durch kürzere Wörter und seltene Symbole durch längere Wörter ersetzt.
+\end{itemize}
+\subsubsection{Konstruktion des Huffman-Baums}
+\begin{itemize}
+    \item Man betrachte die Menge $M_i$ als \anfuehrung{zu betrachtende Symbolmenge mit ihren Häufigkeiten}
+    \item Am Anfang besteht die Menge aus Tupeln von jeweils Zeichen und Häufigkeit. Man zeichnet für jedes Zeichen einen Knoten mit Zeichen und Häufigkeit.
+    \item Nun verbindet man zwei Knoten mit der kleinsten Häufigkeit. Dies bildet einen neuen Knoten, er bekommt die addierte Häufigkeit der beiden ursprünglichen Knoten.
+    \item Nach \textit{links} führende Kanten werden mit \word{0} beschriftet, nach \textit{rechts} führende mit \word{1}
+    \item Die Beschriftung der Kanten (von Wurzel zu Blätter gelesen und konkateniert) ergeben die Codierung des Zeichens.
+\end{itemize}
+
+\subsubsection{Eigenschaften der Huffman-Codierung}
+\begin{itemize}
+    \item Die Hufmann-Codierung ist nicht eindeutig.
+    \item Alle Möglichkeiten sind aber \anfuehrung{gleich gut}
+    \item Man kann auch \anfuehrung{Block-Codierung} anwenden, im Wesentlichen handelt es sich um den selben Algorithmus, allerdings werden nicht einzelne Zeichen sondern mehrere Zeichen auf einmal codiert. (z.B. \anfuehrung{ei} oder \anfuehrung{au})
+\end{itemize}
+
+\newpage
+\section{\kapitel{9 \& 10}{Mima}}
+\subsection{Speicher}
+\subsubsection{Begriffsklärung}
+\begin{itemize}
+    \item \important{Bit}: (Genau) ein Zeichen des Aplhabets $\set{\word{0},\word{1}}$
+    \item \important{Byte}: Ein Wort aus \textbf{8} Bits
+    \item Ein Speicher hat zu jedem Zeitpunkt für jede \important{Adresse} Informationen, welcher \important{Wert} dort steht.\\
+    Vorstellen, wie eine Tabelle mit zwei Spalten
+    \item Formalisierung des Speichers als Abbildung: $m(a)=$\anfuehrung{Wert an Adresse a}
+    \item Abbildung zum Lesen des Speichers: $memread$
+    \begin{align*}
+        memread: Mem\times Adr&\to Val\\
+        (m,a)&\mapsto m(a)
+    \end{align*}
+    \item Abbildung zum Schreiben im Speicher: $memwrite$
+    \begin{align*}
+        memwrite: Val^{Adr}\times Adr\times Val&\to Val^{Adr}\\
+        (m,a, v)&\mapsto m'
+    \end{align*}
+    Wobei folgendes gilt:\\
+    \[m'(a')=
+    \begin{cases}
+        v, &\text{falls } a'=a\\
+        m(a'), &\text{falls } a'\not=a
+    \end{cases}\]
+\end{itemize}
+
+\subsection{Prozessor}
+Programmierung der Mima\footnote{Im weiteren wird nicht auf den genauen Aufbau der MIMA eingegangen, da dies erfahrungsgemäß nicht klausurrelevant ist (Worsch hat noch nie eine Prüfungsaufgabe dazu gestellt). Allerdings solle man sich dies trotzdem nocheinmal kurz in den entsprechenden VL-Folien anschauen.}
+\subsubsection{Grober Aufbau der MIMA}
+Hauptspeicher
+\begin{itemize}
+    \item \important{Adressen} haben \important{20 bit}
+    \item \important{Werte} haben \important{24 bit}
+    \item Im \important{Programmspeicher} steht an jeder Adresse \textit{genau} ein Befehl.\\
+    Entweder 4-bit Befehlscodierung und 20 Bit Adresse, oder 8-bit Befehlscodierung und der Rest ist egal.
+    \item Im Speicher der MIMA wird die Zweierkomplementdarstellung genutzt.
+\end{itemize}
+Prozessor
+\begin{itemize}
+    \item \important{Register}: Speicher für ein Datenwort/Adresse, z.B. \important{Akku}mulator
+    \item \important{Rechenwerk}: \important{ALU} (\textit{arithmetic logic unit}), es gibt verschiedene Funktionen, Argumente aus dem \important{Akku} bzw Befehl/Speicher
+    \item \important{Steuerwerk}:\\
+    \important{IR}: instruction register\\
+    \important{IAR}: instruction address register
+    \item \important{Speicherwerk}\\
+    \important{SAR}: storage address register\\
+    \important{SDR}: storage data register
+\end{itemize}
+
+\subsection{Maschinenbefehle der MIMA}
+\begin{itemize}
+    \item Verschiedene Typen von Befehlen:
+    \begin{itemize}
+        \item Transport von Daten
+        \item Verarbeitung von Daten
+        \item Beeinflussing der Befehlsreihenfolge
+    \end{itemize}
+    \item Es gibt verschiedene Notationsmöglichkeiten, z.B. Bitfolgen, symbolische Namen für Adressen und Befehle
+    \item Befehlsübersicht:\\
+        \begin{tabular}[h]{l|l}
+        Befehl & Erklärung \\
+        \hline
+        LDC c & c $\to$ Akku  \\
+        LDV a & M(a) $\to$ Akku  \\
+        STV a & M(a) $\leftarrow$ Akku  \\
+        LDIV a & M(M(a)) $\to$ Akku  \\
+        STIV a & M(M(a)) $\leftarrow$ Akku  \\
+        \hline
+        ADD a & Akku + M(a) $\to$ Akku\\
+        AND a & Akku AND M(a) $\to$ Akku\\
+        OR  a & Akku OR M(a) $\to$ Akku\\
+        XOR a & Akku XOR M(a) $\to$ Akku\\
+        NOT & Einskomplement von Akku $\to$ Akku\\
+        RAR & rotiert Akku um 1 nach rechts $\to$ Akku\\
+        \hline
+        EQL a & Akku $\leftarrow
+        \begin{cases}
+            -1, &\text{falls Akku = M(a)}\\
+            0, &\text{sonst}
+        \end{cases}$\\
+        \hline
+        JMP a & fahre mit Befehl an Adresse a fort\\
+        JMN a & falls Akku < 0: JMP a\\
+        HALT & stoppt die MIMA\\
+        \hline\hline
+        &c: Konstante, a: Adresse, M(a): Wert an Adresse a
+        \end{tabular}
+    \item Wichtig: \important{Jedes Programm \textbf{muss} mit HALT beendet werden}, sonst läuft es endlos weiter.
+    \item Mit LDC können keine negativen Konstanten geladen werden, da wir nur 20-bit-Konstanten laden können\footnote{Man kann sich dadurch behelfen, dass man die Zahl positiv läd, alle Bits kippt und 1 addiert.}.
+\end{itemize}
 
 \newpage
 \section{\kapitel{11}{Dokumente}}
@@ -695,7 +828,7 @@ Sei $R\subseteq M\times M$ eine Relation auf $M$
     \end{cases}$
 \end{itemize}
 
-\subsubsection{Wahrheitswertt für quantifizierte Formeln}
+\subsubsection{Wahrheitswert für quantifizierte Formeln}
 \begin{itemize}
     \item Gegeben sei die Interpretation $(D,I)$, sowie die Variablenbelegung $\beta$
     \item \valdib{$(\word{\wall x}_i H)$}$=
@@ -1337,6 +1470,8 @@ Im WS2020/21 werden nur \important{Moore-Automaten} betrachtet. Mealy-Automaten 
 Beweisansatz: Wähle $k=$Anzahl der Zustände des Akzeptors.\\
 Dann \textbf{muss} der Akzeptor irgendwo \anfuehrung{im Kreis laufen}, kann also nicht mehr mitzählen, wie oft er bereits im Kreis gelaufen ist. Dadurch lassen sich Worte konstruieren, die fälschlicher Weise als korrekt angenommen werden.
 
-%Seite 16
+\newpage
+\section{\kapitel{20}{Turing-Maschine}}
+TODO: kommt, sobald das Thema in der Vorlesung vollständig behandelt wurde.
 
 \end{document}
