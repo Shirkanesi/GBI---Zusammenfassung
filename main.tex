@@ -12,7 +12,10 @@
 \setcounter{secnumdepth}{4}
 
 %
-\newcommand{\myName}{Julian Keck | uwgmn}
+\newcommand{\version}{1.0.1}
+\newcommand{\ushort}{uwgmn}
+\newcommand{\myName}{Julian Keck | \ushort}
+\newcommand{\myEmail}{\ushort@student.kit.edu}
 \newcommand{\creationYear}{2021}
 
 %Kopf und Fußzeile
@@ -21,7 +24,7 @@
 \ihead{}
 \chead{}
 \ohead{}
-
+\lofoot{\footnotesize Fehler oder Vorschläge? $\Rightarrow$ \myEmail }
 \cfoot{\pagemark}
 \rofoot{\small{\textcopyright}  \myName $\;$-$\;$\creationYear}
  %\pagemark
@@ -108,7 +111,7 @@
 
 \begin{document}
 \title{Zusammenfassung GBI [im WS20/21]\\[\subtitlelinesep]%
-    \smaller[\subtitlerelsize]{}Version 1}
+    \smaller[\subtitlerelsize]{}Version \version}
 \author{Julian Keck\\uwgmn}
 %\date{10.12.2020}
 \date{\today}
@@ -507,7 +510,7 @@ Damit die Decodierung fehlerfrei Funktioniert, müssen die Codewörter auch noch
 \subsection{Speicher}
 \subsubsection{Begriffsklärung}
 \begin{itemize}
-    \item \important{Bit}: (Genau) ein Zeichen des Aplhabets $\set{\word{0},\word{1}}$
+    \item \important{Bit}: (Genau) ein Zeichen des Alphabets $\set{\word{0},\word{1}}$
     \item \important{Byte}: Ein Wort aus \textbf{8} Bits
     \item Ein Speicher hat zu jedem Zeitpunkt für jede \important{Adresse} Informationen, welcher \important{Wert} dort steht.\\
     Vorstellen, wie eine Tabelle mit zwei Spalten
